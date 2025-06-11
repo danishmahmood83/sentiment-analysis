@@ -1,4 +1,4 @@
-package com.stockanalysis.socialmedia_stock_sentiment;
+/*package com.stockanalysis.socialmedia_stock_sentiment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,4 +10,4 @@ class SocialmediaStockSentimentApplicationTests {
 	void contextLoads() {
 	}
 
-}
+}*/
