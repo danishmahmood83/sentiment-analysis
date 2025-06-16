@@ -11,3 +11,4 @@ public class StockSentimentApplication {
         SpringApplication.run(StockSentimentApplication.class, args);
     }
 }
+
