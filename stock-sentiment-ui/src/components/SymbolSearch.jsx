@@ -4,15 +4,19 @@ import axios from "axios";
 function SymbolSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [selectedSymbol, setSelectedSymbol] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(""); // To show success/error msgs
+  const [message, setMessage] = useState("");
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     setMessage("");
+    setSelectedSymbol(null);
     try {
-      const response = await axios.get(`http://localhost:8080/api/search?query=${query}`);
+      const response = await axios.get(
+        `http://localhost:8080/api/search?query=${query}`
+      );
       setResults(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -22,21 +26,30 @@ function SymbolSearch() {
     setLoading(false);
   };
 
-  const handleAddToScheduler = async (item) => {
-    setMessage("");
-    try {
-      // Prepare payload for tracked symbol
-      const trackedSymbol = {
-        symbol: item.symbol,
-        companyName: item.name,
-        exchange: item.exchangeShortName,
-      };
+  const handleAddToScheduler = async () => {
+    if (!selectedSymbol) return;
 
+    const trackedSymbol = {
+      symbol: selectedSymbol.symbol,
+      name: selectedSymbol.name,
+      exchange: selectedSymbol.exchangeShortName,
+    };
+
+    try {
       await axios.post("http://localhost:8080/api/tracked", trackedSymbol);
-      setMessage(`Added ${item.symbol} to scheduler.`);
+      setMessage(`✅ Added ${selectedSymbol.symbol} to scheduler.`);
     } catch (error) {
       console.error("Failed to add symbol:", error);
-      setMessage(`Failed to add ${item.symbol}.`);
+      setMessage(`❌ Failed to add ${selectedSymbol.symbol}.`);
+    }
+  };
+
+  const handleSelectionChange = (e) => {
+    const selectedIndex = e.target.value;
+    if (selectedIndex === "") {
+      setSelectedSymbol(null);
+    } else {
+      setSelectedSymbol(results[selectedIndex]);
     }
   };
 
@@ -50,7 +63,9 @@ function SymbolSearch() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="flex-1 p-2 border rounded"
-          onKeyDown={(e) => { if (e.key === "Enter") handleSearch(); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
         />
         <button
           onClick={handleSearch}
@@ -60,32 +75,37 @@ function SymbolSearch() {
         </button>
       </div>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : results.length > 0 ? (
-        <ul className="divide-y">
-          {results.map((item, index) => (
-            <li
-              key={index}
-              className="py-2 flex justify-between items-center"
-            >
-              <div>
-                <strong>{item.symbol}</strong> - {item.name} ({item.exchangeShortName})
-              </div>
-              <button
-                onClick={() => handleAddToScheduler(item)}
-                className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-              >
-                Add to Scheduler
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-gray-500">No results to display.</p>
+      {loading && <p>Loading...</p>}
+
+      {!loading && results.length > 0 && (
+        <div className="mb-4">
+          <select
+            className="w-full p-2 border rounded"
+            defaultValue=""
+            onChange={handleSelectionChange}
+          >
+            <option value="">-- Select a symbol --</option>
+            {results.map((item, index) => (
+              <option key={item.symbol} value={index}>
+                {item.symbol} - {item.name} ({item.exchangeShortName})
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
-      {message && <p className="mt-4 text-center">{message}</p>}
+      {selectedSymbol && (
+        <button
+          onClick={handleAddToScheduler}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-2"
+        >
+          ➕ Add to Scheduler
+        </button>
+      )}
+
+      {message && (
+        <p className="mt-4 text-center font-medium text-blue-700">{message}</p>
+      )}
     </div>
   );
 }
