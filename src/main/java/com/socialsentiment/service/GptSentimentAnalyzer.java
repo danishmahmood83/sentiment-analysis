@@ -19,7 +19,6 @@ public class GptSentimentAnalyzer {
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String OPENAI_API_KEY = "";
 
     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
@@ -55,7 +54,7 @@ public class GptSentimentAnalyzer {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
-                    .header("Authorization", "Bearer " + OPENAI_API_KEY)
+                    .header("Authorization", "Bearer " + "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")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
