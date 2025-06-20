@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function SymbolSearch() {
+function SymbolSearch({ onSymbolAdded }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [selectedSymbol, setSelectedSymbol] = useState(null);
@@ -31,13 +31,14 @@ function SymbolSearch() {
 
     const trackedSymbol = {
       symbol: selectedSymbol.symbol,
-      name: selectedSymbol.name,
-      exchange: selectedSymbol.exchangeShortName,
+      companyName: selectedSymbol.name,
+      exchange: selectedSymbol.exchangeShortName
     };
 
     try {
       await axios.post("http://localhost:8080/api/tracked", trackedSymbol);
       setMessage(`✅ Added ${selectedSymbol.symbol} to scheduler.`);
+      if (onSymbolAdded) onSymbolAdded();
     } catch (error) {
       console.error("Failed to add symbol:", error);
       setMessage(`❌ Failed to add ${selectedSymbol.symbol}.`);

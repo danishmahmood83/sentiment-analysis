@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const TrackedSymbolDropdown = ({ onRemove }) => {
+const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   const [symbols, setSymbols] = useState([]);
-  const [selectedSymbol, setSelectedSymbol] = useState('');
+  const [selectedSymbol, setSelectedSymbol] = useState("");
 
-  // Fetch tracked symbols from backend when dropdown is focused
   const fetchTrackedSymbols = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/tracked');
-      setSymbols(response.data); // response.data is expected to be array of { id, symbol }
+      const response = await axios.get("http://localhost:8080/api/tracked");
+      setSymbols(response.data);
     } catch (error) {
-      console.error('Error fetching tracked symbols:', error);
+      console.error("Error fetching tracked symbols:", error);
     }
   };
 
-  // Remove the selected symbol
+  useEffect(() => {
+    fetchTrackedSymbols();
+  }, [refreshKey]);
+
   const handleRemove = async () => {
     if (!selectedSymbol) return;
+
     try {
       await axios.delete(`http://localhost:8080/api/tracked/${selectedSymbol}`);
-      setSelectedSymbol('');
-      setSymbols((prev) => prev.filter((item) => item.symbol !== selectedSymbol));
-      if (onRemove) onRemove(selectedSymbol);
+      setSelectedSymbol("");
+      if (onSymbolRemoved) onSymbolRemoved();
     } catch (error) {
-      console.error('Error removing symbol:', error);
+      console.error("Error removing symbol:", error);
     }
   };
 
@@ -33,7 +35,6 @@ const TrackedSymbolDropdown = ({ onRemove }) => {
       <select
         className="w-full p-2 border rounded mb-4"
         value={selectedSymbol}
-        onFocus={fetchTrackedSymbols}
         onChange={(e) => setSelectedSymbol(e.target.value)}
       >
         <option value="">-- Select Symbol to Remove --</option>

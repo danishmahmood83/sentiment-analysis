@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import SentimentChart from './SentimentChart';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import SentimentChart from "./SentimentChart";
 
-const SymbolChartViewer = () => {
+const SymbolChartViewer = ({ refreshKey }) => {
   const [symbols, setSymbols] = useState([]);
-  const [selectedSymbol, setSelectedSymbol] = useState('');
+  const [selectedSymbol, setSelectedSymbol] = useState("");
 
   useEffect(() => {
     const fetchSymbols = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/tracked');
-        setSymbols(response.data); // array of { id, symbol }
+        const response = await axios.get("http://localhost:8080/api/tracked");
+        setSymbols(response.data);
       } catch (error) {
-        console.error('Error fetching tracked symbols:', error);
+        console.error("Error fetching tracked symbols:", error);
       }
     };
 
     fetchSymbols();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="p-4 max-w-md mx-auto">
