@@ -54,7 +54,7 @@ public class GptSentimentAnalyzer {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
-                    .header("Authorization", "Bearer " + "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")
+                    .header("Authorization", "Bearer " + "")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
