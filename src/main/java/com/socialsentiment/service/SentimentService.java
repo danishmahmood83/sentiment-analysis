@@ -35,41 +35,32 @@ public class SentimentService {
             JsonNode root = objectMapper.readTree(response.body());
             JsonNode messages = root.get("messages");
 
-            int bullishCount = 0;
-            int bearishCount = 0;
-            int neutralCount = 0;
-
-            StringBuilder combinedText = new StringBuilder();
 
             for (JsonNode message : messages) {
+                long messageId = message.get("id").asLong();
+
+                // ✅ Skip if message already exists
+                if (repository.existsByMessageId(messageId)) {
+                    continue;
+                }
+
                 String title = message.has("title") ? message.get("title").asText("") : "";
                 String body = message.get("body").asText("");
-                String fullMessage = title + " " + body;
+                String fullMessage = (title + " " + body).trim();
 
-                combinedText.append(fullMessage).append("\n\n");
+                // 🔥 Call GPT for sentiment analysis
+                String sentiment = gptSentimentAnalyzer.analyzeSentimentWithGPT(fullMessage, symbol);
 
-                // 🔥 Call GPT for each message
-                String sentiment = gptSentimentAnalyzer.analyzeSentimentWithGPT(fullMessage,symbol);
+                // 💾 Save each message individually
+                StockSentiment stockSentiment = new StockSentiment();
+                stockSentiment.setSymbol(symbol);
+                stockSentiment.setMessage(fullMessage);
+                stockSentiment.setSentiment(sentiment);
+                stockSentiment.setMessageId(messageId);
+                stockSentiment.setCreatedAt(LocalDateTime.now());
 
-                if (sentiment.equals("bullish")) bullishCount++;
-                else if (sentiment.equals("bearish")) bearishCount++;
-                else neutralCount++;
+                repository.save(stockSentiment);
             }
-
-            // 🧠 Decide final sentiment based on majority
-            String finalSentiment;
-            if (bullishCount > bearishCount && bullishCount > neutralCount) finalSentiment = "bullish";
-            else if (bearishCount > bullishCount && bearishCount > neutralCount) finalSentiment = "bearish";
-            else finalSentiment = "neutral";
-
-            // 📝 Save one record with combined text and final sentiment
-            StockSentiment stockSentiment = new StockSentiment();
-            stockSentiment.setSymbol(symbol);
-            stockSentiment.setMessage(combinedText.toString());
-            stockSentiment.setSentiment(finalSentiment);
-            stockSentiment.setCreatedAt(LocalDateTime.now());
-
-            repository.save(stockSentiment);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,6 +19,9 @@ public class StockSentiment {
 
     private String sentiment;
 
+    @Column(name = "message_id", unique = true)
+    private Long messageId;
+
     private LocalDateTime createdAt;
 
     // Getters and setters
@@ -36,4 +39,8 @@ public class StockSentiment {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Long getMessageId() { return messageId; }
+    public void setMessageId(Long messageId) { this.messageId = messageId; }
+
 }
