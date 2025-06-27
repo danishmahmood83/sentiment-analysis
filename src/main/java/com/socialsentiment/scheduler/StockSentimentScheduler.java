@@ -9,6 +9,30 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Scheduler for regularly fetching and processing stock sentiment data.
+ * This class uses Spring's {@code @Scheduled} annotation to execute a periodic task
+ * that fetches sentiment information for tracked stock symbols and saves the data
+ * to the database.
+ *
+ * Responsibilities:
+ * - Retrieve all tracked stock symbols from the repository.
+ * - For each tracked symbol, invoke the sentiment service to fetch and analyze
+ *   sentiment data.
+ * - Persist the processed data into the sentiment repository.
+ *
+ * Dependencies:
+ * - {@code SentimentService}: Handles fetching and sentiment analysis logic.
+ * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
+ *
+ * Scheduling:
+ * - The task is executed periodically with a fixed rate of 60,000 milliseconds (1 minute).
+ *
+ * Annotations:
+ * - {@code @Component}: Marks this class as a Spring-managed component.
+ * - {@code @Autowired}: Injects dependencies automatically.
+ * - {@code @Scheduled}: Defines the periodic schedule for the execution of tasks.
+ */
 @Component
 public class StockSentimentScheduler {
     @Autowired
@@ -16,6 +40,29 @@ public class StockSentimentScheduler {
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
 
+    /**
+     * Periodically fetches sentiment data for all tracked stock symbols and processes it.
+     *
+     * This method is executed at a fixed rate of 60,000 milliseconds (1 minute) using
+     * Spring's {@code @Scheduled} annotation. It performs the following actions:
+     *
+     * 1. Retrieves the list of all tracked stock symbols from the {@code TrackedSymbolRepository}.
+     * 2. Iterates over the retrieved symbols.
+     * 3. Invokes the {@code fetchAndSave} method of the {@code SentimentService} for each symbol.
+     *
+     * The {@code SentimentService} handles the fetching of sentiment data from an external API,
+     * performs sentiment analysis, and persists the results into the database.
+     *
+     * Dependencies:
+     * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
+     * - {@code SentimentService}: Handles fetching, sentiment analysis, and data persistence.
+     *
+     * Scheduling:
+     * - The method is executed periodically with a fixed delay of 60,000 milliseconds (1 minute).
+     *
+     * Annotation:
+     * - {@code @Scheduled}: Specifies the task scheduler's fixed interval for execution.
+     */
     @Scheduled(fixedRate = 60000)
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
