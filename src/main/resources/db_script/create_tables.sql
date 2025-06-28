@@ -14,6 +14,7 @@ CREATE TABLE stock_sentiment (
     symbol VARCHAR2(20) NOT NULL,
     message CLOB NOT NULL,
     sentiment VARCHAR2(20) NOT NULL,
-    message_id NUMBER UNIQUE NOT NULL,
+    analysis_method VARCHAR2(20) NOT NULL,
+    message_id NUMBER  NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

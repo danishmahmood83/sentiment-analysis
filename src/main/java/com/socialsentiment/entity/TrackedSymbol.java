@@ -19,6 +19,7 @@ public class TrackedSymbol {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+
     // Automatically set createdAt before saving
     @PrePersist
     protected void onCreate() {
@@ -35,4 +36,6 @@ public class TrackedSymbol {
     public void setName(String name) { this.name = name; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+
 }
