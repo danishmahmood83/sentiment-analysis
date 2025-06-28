@@ -15,6 +15,7 @@ import java.net.http.HttpResponse;
 public class FinBertSentimentAnalyzer {
 
     private static final String API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert";
+    private static final String API_KEY = "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";  // Replace with your actual key
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,7 +33,7 @@ public class FinBertSentimentAnalyzer {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
-                    .header("Authorization", "Bearer " + "")
+                    .header("Authorization", "Bearer " + API_KEY)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
