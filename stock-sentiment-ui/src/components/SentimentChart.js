@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { fetchSentimentData } from '../api';
 
 import {
   Chart as ChartJS,
@@ -12,49 +11,48 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const SentimentChart = ({ symbol }) => {
+const SentimentChart = ({ symbol, analysisMethod }) => {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
+    if (!symbol) return;
+
     const loadData = async () => {
-      const data = await fetchSentimentData(symbol);
+      try {
+        const url = `http://localhost:8080/api/sentiment/${symbol}/summary${analysisMethod ? `?analysisMethod=${analysisMethod}` : ''}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
 
-      const sentimentLabels = {
-        bullish: 'Bullish',
-        bearish: 'Bearish',
-        neutral: 'Neutral'
-      };
+        const sentimentLabels = { bullish: 'Bullish', bearish: 'Bearish', neutral: 'Neutral' };
+        const sentimentColors = { bullish: '#4caf50', bearish: '#f44336', neutral: '#ff9800' };
+        const sentimentOrder = ['bullish', 'bearish', 'neutral'];
 
-      const sentimentColors = {
-        bullish: '#4caf50', // green
-        bearish: '#f44336', // red
-        neutral: '#ff9800'  // orange
-      };
+        const filtered = sentimentOrder
+          .filter(key => data[key] && data[key] > 0)
+          .map(key => ({
+            label: sentimentLabels[key],
+            value: data[key],
+            color: sentimentColors[key]
+          }));
 
-      const sentimentOrder = ['bullish', 'bearish', 'neutral'];
-
-      // Filter out zero values
-      const filtered = sentimentOrder
-        .filter(key => data[key] && data[key] > 0)
-        .map(key => ({
-          label: sentimentLabels[key],
-          value: data[key],
-          color: sentimentColors[key]
-        }));
-
-      setChartData({
-        labels: filtered.map(item => item.label),
-        datasets: [{
-          label: 'Sentiment Count',
-          data: filtered.map(item => item.value),
-          backgroundColor: filtered.map(item => item.color),
-          borderWidth: 1
-        }]
-      });
+        setChartData({
+          labels: filtered.map(item => item.label),
+          datasets: [{
+            label: 'Sentiment Count',
+            data: filtered.map(item => item.value),
+            backgroundColor: filtered.map(item => item.color),
+            borderWidth: 1
+          }]
+        });
+      } catch (error) {
+        console.error(error);
+        setChartData(null);
+      }
     };
 
     loadData();
-  }, [symbol]);
+  }, [symbol, analysisMethod]);
 
   const options = {
     plugins: {
@@ -76,11 +74,11 @@ const SentimentChart = ({ symbol }) => {
   };
 
   return (
-    <div style={{ width: '400px', margin: 'auto' }}>
-      <h3>{symbol} Sentiment</h3>
+    <div style={{ width: '300px', margin: 'auto' }}>
+      <h4 style={{ textAlign: 'center' }}>{analysisMethod || "All Methods"}</h4>
       {chartData && chartData.labels.length > 0
         ? <Pie data={chartData} options={options} />
-        : <p>No sentiment data available.</p>}
+        : <p style={{ textAlign: 'center' }}>No data available.</p>}
     </div>
   );
 };
