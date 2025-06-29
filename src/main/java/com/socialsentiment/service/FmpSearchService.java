@@ -16,17 +16,10 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class FmpSearchService {
 
-    @Autowired
-    private final HttpClient httpClient;
-    @Autowired
-    private final ObjectMapper objectMapper;
+    private HttpClient httpClient = HttpClient.newHttpClient();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public FmpSearchService(HttpClient httpClient, ObjectMapper objectMapper) {
-        this.httpClient = httpClient;
-        this.objectMapper = objectMapper;
-    }
-
-    public JsonNode searchSymbols(String query) {
+   public JsonNode searchSymbols(String query) {
         try {
             String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
 

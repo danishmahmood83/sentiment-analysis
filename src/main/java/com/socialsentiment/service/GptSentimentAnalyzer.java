@@ -18,16 +18,10 @@ public class GptSentimentAnalyzer {
 
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-    @Autowired
-    private final HttpClient httpClient;
-    @Autowired
-    private final ObjectMapper objectMapper;
+    private HttpClient httpClient = HttpClient.newHttpClient();
+    private ObjectMapper mapper = new ObjectMapper();
 
-    public GptSentimentAnalyzer(HttpClient httpClient, ObjectMapper objectMapper) {
-        this.httpClient = httpClient;
-        this.objectMapper = objectMapper;
-    }
-    public String analyzeSentimentWithGPT(String inputText,String symbol) {
+     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
             // Prompt to send
             String prompt = String.format(
@@ -37,7 +31,6 @@ public class GptSentimentAnalyzer {
             );
 
             // Construct the JSON payload properly
-            ObjectMapper mapper = new ObjectMapper();
             ObjectNode root = mapper.createObjectNode();
             root.put("model", "gpt-4");
             root.put("temperature", 0.2);

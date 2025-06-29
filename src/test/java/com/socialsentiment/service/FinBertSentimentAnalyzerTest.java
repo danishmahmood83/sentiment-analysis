@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -26,11 +27,11 @@ class FinBertSentimentAnalyzerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @InjectMocks
     private FinBertSentimentAnalyzer analyzer;
 
     @BeforeEach
     void setUp() {
-        analyzer = new FinBertSentimentAnalyzer(mockHttpClient,objectMapper);
     }
 
     @Test

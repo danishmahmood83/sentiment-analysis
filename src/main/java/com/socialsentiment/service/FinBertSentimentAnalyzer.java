@@ -18,15 +18,8 @@ public class FinBertSentimentAnalyzer {
     private static final String API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert";
     private static final String API_KEY = "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";  // Replace with your actual key
 
-    @Autowired
-    private final HttpClient client;
-    @Autowired
-    private final ObjectMapper objectMapper;
-
-    public FinBertSentimentAnalyzer(HttpClient client, ObjectMapper objectMapper) {
-        this.client = client;
-        this.objectMapper = objectMapper;
-    }
+    private HttpClient client = HttpClient.newHttpClient();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
 
     public String analyzeSentimentWithFinBERT(String symbol, String message) {

@@ -23,12 +23,12 @@ class CoreNlpSentimentAnalyzerTest {
     @Mock
     private CoreSentence mockSentence;
 
+    @InjectMocks
     private CoreNlpSentimentAnalyzer analyzer;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        analyzer = new CoreNlpSentimentAnalyzer(mockPipeline);
+        MockitoAnnotations.openMocks(this);  // Initialize mocks before each test
     }
 
     @Test
@@ -36,17 +36,6 @@ class CoreNlpSentimentAnalyzerTest {
         String message = "Good performance";
         String symbol = "AAPL";
 
-        // Mock CoreDocument creation & behavior
-        // Since CoreDocument is created inside method, we cannot mock its constructor easily
-        // So we will mock pipeline.annotate() to fill the document with mock data using doAnswer
-
-        // Use spy to override new CoreDocument inside the method is hard,
-        // so we can mock pipeline.annotate to do nothing (or simulate)
-
-        // Workaround: use partial mocking of CoreNlpSentimentAnalyzer to mock analyzeSentiment internals
-        // OR use a wrapper method for document creation (refactor needed)
-
-        // Instead, mock pipeline.annotate(document) to just do nothing
         doAnswer(invocation -> {
             CoreDocument docArg = invocation.getArgument(0);
 

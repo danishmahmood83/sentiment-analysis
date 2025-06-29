@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,12 +26,11 @@ class FmpSearchServiceTest {
     private HttpResponse<String> mockHttpResponse;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
+    @InjectMocks
     private FmpSearchService fmpSearchService;
 
     @BeforeEach
     void setUp() {
-        fmpSearchService = new FmpSearchService(mockHttpClient, objectMapper);
     }
 
     @Test
