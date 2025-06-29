@@ -2,6 +2,7 @@ package com.socialsentiment.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,15 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class FmpSearchService {
 
-   // @Value("${fmp.api.key}")
-   // private String apiKey;
+    @Autowired
+    private final HttpClient httpClient;
+    @Autowired
+    private final ObjectMapper objectMapper;
 
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    public FmpSearchService(HttpClient httpClient, ObjectMapper objectMapper) {
+        this.httpClient = httpClient;
+        this.objectMapper = objectMapper;
+    }
 
     public JsonNode searchSymbols(String query) {
         try {

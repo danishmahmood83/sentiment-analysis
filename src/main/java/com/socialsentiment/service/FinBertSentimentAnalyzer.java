@@ -4,6 +4,7 @@ package com.socialsentiment.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -17,13 +18,19 @@ public class FinBertSentimentAnalyzer {
     private static final String API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert";
     private static final String API_KEY = "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";  // Replace with your actual key
 
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private final HttpClient client;
+    @Autowired
+    private final ObjectMapper objectMapper;
+
+    public FinBertSentimentAnalyzer(HttpClient client, ObjectMapper objectMapper) {
+        this.client = client;
+        this.objectMapper = objectMapper;
+    }
+
 
     public String analyzeSentimentWithFinBERT(String symbol, String message) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            HttpClient client = HttpClient.newHttpClient();
 
             String input = String.format("Financial sentiment for %s: %s", symbol, message);
 

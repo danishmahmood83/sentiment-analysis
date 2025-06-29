@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,15 @@ public class GptSentimentAnalyzer {
 
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private final HttpClient httpClient;
+    @Autowired
+    private final ObjectMapper objectMapper;
 
+    public GptSentimentAnalyzer(HttpClient httpClient, ObjectMapper objectMapper) {
+        this.httpClient = httpClient;
+        this.objectMapper = objectMapper;
+    }
     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
             // Prompt to send
@@ -50,11 +57,11 @@ public class GptSentimentAnalyzer {
 
             root.set("messages", messages);
 
-            String requestBody = mapper.writeValueAsString(root);  // ✅ Proper JSON
+            String requestBody = mapper.writeValueAsString(root);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
-                    .header("Authorization", "Bearer " + "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")
+                    .header("Authorization", "Bearer " + "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")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();

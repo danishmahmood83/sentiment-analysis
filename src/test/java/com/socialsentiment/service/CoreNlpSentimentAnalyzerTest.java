@@ -1,0 +1,93 @@
+package com.socialsentiment.service;
+
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+class CoreNlpSentimentAnalyzerTest {
+
+    @Mock
+    private StanfordCoreNLP mockPipeline;
+
+    @Mock
+    private CoreDocument mockDocument;
+
+    @Mock
+    private CoreSentence mockSentence;
+
+    private CoreNlpSentimentAnalyzer analyzer;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        analyzer = new CoreNlpSentimentAnalyzer(mockPipeline);
+    }
+
+    @Test
+    void analyzeSentiment_returnsBullishForPositive() {
+        String message = "Good performance";
+        String symbol = "AAPL";
+
+        // Mock CoreDocument creation & behavior
+        // Since CoreDocument is created inside method, we cannot mock its constructor easily
+        // So we will mock pipeline.annotate() to fill the document with mock data using doAnswer
+
+        // Use spy to override new CoreDocument inside the method is hard,
+        // so we can mock pipeline.annotate to do nothing (or simulate)
+
+        // Workaround: use partial mocking of CoreNlpSentimentAnalyzer to mock analyzeSentiment internals
+        // OR use a wrapper method for document creation (refactor needed)
+
+        // Instead, mock pipeline.annotate(document) to just do nothing
+        doAnswer(invocation -> {
+            CoreDocument docArg = invocation.getArgument(0);
+
+            // When docArg.sentences() called, return mocked sentence list
+            when(docArg.sentences()).thenReturn(List.of(mockSentence));
+            when(mockSentence.sentiment()).thenReturn("Positive");
+            return null;
+        }).when(mockPipeline).annotate(any(CoreDocument.class));
+
+        String sentiment = analyzer.analyzeSentiment(message, symbol);
+        assertThat(sentiment).isEqualTo("bullish");
+    }
+
+    @Test
+    void analyzeSentiment_returnsBearishForNegative() {
+        String message = "Bad news";
+        String symbol = "TSLA";
+
+        doAnswer(invocation -> {
+            CoreDocument docArg = invocation.getArgument(0);
+            when(docArg.sentences()).thenReturn(List.of(mockSentence));
+            when(mockSentence.sentiment()).thenReturn("Negative");
+            return null;
+        }).when(mockPipeline).annotate(any(CoreDocument.class));
+
+        String sentiment = analyzer.analyzeSentiment(message, symbol);
+        assertThat(sentiment).isEqualTo("bearish");
+    }
+
+    @Test
+    void analyzeSentiment_returnsNeutralIfNoSentences() {
+        String message = "No data";
+        String symbol = "GOOGL";
+
+        doAnswer(invocation -> {
+            CoreDocument docArg = invocation.getArgument(0);
+            when(docArg.sentences()).thenReturn(List.of());
+            return null;
+        }).when(mockPipeline).annotate(any(CoreDocument.class));
+
+        String sentiment = analyzer.analyzeSentiment(message, symbol);
+        assertThat(sentiment).isEqualTo("neutral");
+    }
+}

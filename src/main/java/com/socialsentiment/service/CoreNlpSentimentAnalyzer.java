@@ -10,7 +10,7 @@ public class CoreNlpSentimentAnalyzer {
 
     private final StanfordCoreNLP pipeline;
 
-    public CoreNlpSentimentAnalyzer() {
+    public CoreNlpSentimentAnalyzer(StanfordCoreNLP mockPipeline) {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,sentiment");
         this.pipeline = new StanfordCoreNLP(props);

@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class SymbolSearchController {
 
     @Autowired
-    private FmpSearchService searchService;
+    private final FmpSearchService searchService;
+
+    public SymbolSearchController(FmpSearchService searchService) {
+        this.searchService = searchService;
+    }
 
     @GetMapping
     public JsonNode search(@RequestParam String query) {
