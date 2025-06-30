@@ -16,7 +16,7 @@ public class StockSentimentScheduler {
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
 
-    @Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 60000)
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
