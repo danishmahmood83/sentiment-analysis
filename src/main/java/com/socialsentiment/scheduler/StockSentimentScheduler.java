@@ -40,6 +40,7 @@ public class StockSentimentScheduler {
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
 
+    //@Scheduled(fixedRate = 60000)
     /**
      * Periodically fetches sentiment data for all tracked stock symbols and processes it.
      *

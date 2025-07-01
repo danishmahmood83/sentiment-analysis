@@ -27,6 +27,9 @@ public class StockSentiment {
 
     private String sentiment;
 
+    @Column(name = "analysis_method")
+    private String analysisMethod;
+
     @Column(name = "message_id", unique = true)
     private Long messageId;
 
@@ -50,5 +53,9 @@ public class StockSentiment {
 
     public Long getMessageId() { return messageId; }
     public void setMessageId(Long messageId) { this.messageId = messageId; }
+
+
+    public String getAnalysisMethod() { return analysisMethod; }
+    public void setAnalysisMethod(String analysisMethod) { this.analysisMethod = analysisMethod; }
 
 }

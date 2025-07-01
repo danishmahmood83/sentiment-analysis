@@ -1,30 +1,4 @@
-# Node modules
-node_modules/
-node_modules/*
-
-# Environment variables
-.env
-
-# Build files
-/build
-/dist
-
-# Cache
-.cache
-.npm
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
+HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -54,3 +28,8 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+node_modules/
+stock-sentiment-ui/node_modules/

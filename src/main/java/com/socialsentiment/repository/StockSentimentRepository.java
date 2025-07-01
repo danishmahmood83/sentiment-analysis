@@ -16,5 +16,7 @@ import java.util.List;
  */
 public interface StockSentimentRepository extends JpaRepository<StockSentiment, Long> {
     List<StockSentiment> findBySymbol(String symbol);
-    boolean existsByMessageId(Long messageId);
+    boolean existsByMessageIdAndAnalysisMethod(long messageId, String analysisMethod);
+    List<StockSentiment> findBySymbolAndAnalysisMethod(String symbol, String analysisMethod);
+
 }

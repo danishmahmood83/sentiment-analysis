@@ -45,8 +45,15 @@ public class SentimentController {
      * @return a map with sentiment categories as keys and their respective counts as values
      */
     @GetMapping("/{symbol}/summary")
-    public Map<String, Long> getSentimentSummary(@PathVariable String symbol) {
-        List<StockSentiment> sentiments = repository.findBySymbol(symbol);
+    public Map<String, Long> getSentimentSummaryByMethod(
+            @PathVariable String symbol,
+            @RequestParam(required = false) String analysisMethod) {
+        List<StockSentiment> sentiments;
+        if (analysisMethod != null && !analysisMethod.isEmpty()) {
+            sentiments = repository.findBySymbolAndAnalysisMethod(symbol, analysisMethod);
+        } else {
+            sentiments = repository.findBySymbol(symbol);
+        }
         return sentiments.stream()
                 .collect(Collectors.groupingBy(StockSentiment::getSentiment, Collectors.counting()));
     }

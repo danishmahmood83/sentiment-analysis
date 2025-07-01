@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class GptSentimentAnalyzer {
 
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private HttpClient httpClient = HttpClient.newHttpClient();
+    private ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Analyzes the sentiment of the provided text in relation to a given stock symbol
@@ -49,7 +50,6 @@ public class GptSentimentAnalyzer {
             );
 
             // Construct the JSON payload properly
-            ObjectMapper mapper = new ObjectMapper();
             ObjectNode root = mapper.createObjectNode();
             root.put("model", "gpt-4");
             root.put("temperature", 0.2);
@@ -69,11 +69,11 @@ public class GptSentimentAnalyzer {
 
             root.set("messages", messages);
 
-            String requestBody = mapper.writeValueAsString(root);  // ✅ Proper JSON
+            String requestBody = mapper.writeValueAsString(root);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
-                    .header("Authorization", "Bearer " + "")
+                    .header("Authorization", "Bearer " + "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")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
