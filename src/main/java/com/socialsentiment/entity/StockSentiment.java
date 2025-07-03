@@ -4,6 +4,14 @@ package com.socialsentiment.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Represents the stock sentiment data associated with a specific stock symbol.
+ * This entity is used to store and process sentiments related to stocks,
+ * fetched from various sources. It provides fields to store metadata like
+ * the message, sentiment type, and creation time.
+ *
+ * The `StockSentiment` entity is mapped to the "stock_sentiment" table in the database.
+ */
 @Entity
 @Table(name = "stock_sentiment")
 public class StockSentiment {

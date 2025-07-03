@@ -13,6 +13,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Service that provides sentiment analysis for financial text data
+ * using the OpenAI GPT API. This class integrates with GPT models
+ * to evaluate the sentiment of a given text concerning a specific
+ * stock symbol and returns the sentiment as one of three possible
+ * values: bullish, bearish, or neutral.
+ */
 @Service
 public class GptSentimentAnalyzer {
 
@@ -21,7 +28,19 @@ public class GptSentimentAnalyzer {
     private HttpClient httpClient = HttpClient.newHttpClient();
     private ObjectMapper mapper = new ObjectMapper();
 
-     public String analyzeSentimentWithGPT(String inputText,String symbol) {
+    /**
+     * Analyzes the sentiment of the provided text in relation to a given stock symbol
+     * using the GPT-4 model via the OpenAI API. The method interprets the sentiment
+     * in the context of the stock symbol and returns the result as one of three possible
+     * values: "bullish", "bearish", or "neutral".
+     *
+     * @param inputText the message or text to be analyzed, which provides context for sentiment analysis
+     * @param symbol the stock symbol against which the sentiment of the text is evaluated
+     * @return a string representing the sentiment of the provided text in relation to the stock symbol.
+     *         Returns one of "bullish" (positive sentiment), "bearish" (negative sentiment),
+     *         or "neutral" (no definitive sentiment).
+     */
+    public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
             // Prompt to send
             String prompt = String.format(
