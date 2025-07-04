@@ -1,6 +1,8 @@
 package com.socialsentiment.scheduler;
 
 import com.socialsentiment.entity.TrackedSymbol;
+import com.socialsentiment.kafka.producer.NotificationProducer;
+import com.socialsentiment.repository.StockSentimentRepository;
 import com.socialsentiment.repository.TrackedSymbolRepository;
 import com.socialsentiment.service.SentimentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Scheduler for regularly fetching and processing stock sentiment data.
@@ -39,6 +42,11 @@ public class StockSentimentScheduler {
     SentimentService sentimentService;
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
+    @Autowired
+    private NotificationProducer notificationProducer;
+    @Autowired
+    private StockSentimentRepository  stockSentimentRepository;
+
 
     //@Scheduled(fixedRate = 60000)
     /**
@@ -68,7 +76,28 @@ public class StockSentimentScheduler {
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
-            sentimentService.fetchAndSave(s.getSymbol());
+           // sentimentService.fetchAndSave(s.getSymbol());
+            checkAndNotifyThreshold(s.getSymbol());
+
         }
+    }
+
+    public void checkAndNotifyThreshold(String symbol) {
+        // Query the repository to count sentiment by type for this symbol
+        Map<String, Long> sentimentCounts = stockSentimentRepository.countBySymbolGroupBySentiment(symbol);
+
+        long bullishCount = sentimentCounts.getOrDefault("bullish", 0L);
+        long bearishCount = sentimentCounts.getOrDefault("bearish", 0L);
+
+        if (bullishCount >= 50) {
+            String msg = symbol + ":bullish:" + bullishCount;
+            notificationProducer.sendNotification(msg);
+        }
+
+        if (bearishCount >= 50) {
+            String msg = symbol + ":bearish:" + bearishCount;
+            notificationProducer.sendNotification(msg);
+        }
+
     }
 }

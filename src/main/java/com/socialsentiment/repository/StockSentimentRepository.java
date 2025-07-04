@@ -2,7 +2,12 @@ package com.socialsentiment.repository;
 
 import com.socialsentiment.entity.StockSentiment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Repository interface for managing and accessing {@code StockSentiment} entities.
@@ -16,7 +21,20 @@ import java.util.List;
  */
 public interface StockSentimentRepository extends JpaRepository<StockSentiment, Long> {
     List<StockSentiment> findBySymbol(String symbol);
+
     boolean existsByMessageIdAndAnalysisMethod(long messageId, String analysisMethod);
+
     List<StockSentiment> findBySymbolAndAnalysisMethod(String symbol, String analysisMethod);
+
+    @Query("SELECT s.sentiment AS sentiment, COUNT(s) AS count FROM StockSentiment s WHERE s.symbol = :symbol GROUP BY s.sentiment")
+    List<Object[]> countSentimentBySymbol(@Param("symbol") String symbol);
+
+    default Map<String, Long> countBySymbolGroupBySentiment(String symbol) {
+        List<Object[]> results = countSentimentBySymbol(symbol);
+        return results.stream().collect(Collectors.toMap(
+                row -> (String) row[0],
+                row -> (Long) row[1]
+        ));
+    }
 
 }

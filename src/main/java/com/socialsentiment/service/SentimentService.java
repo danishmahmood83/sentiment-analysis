@@ -3,6 +3,7 @@ package com.socialsentiment.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialsentiment.entity.StockSentiment;
+import com.socialsentiment.kafka.producer.NotificationProducer;
 import com.socialsentiment.repository.StockSentimentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class SentimentService {
     private CoreNlpSentimentAnalyzer coreNlpSentimentAnalyzer;
     @Autowired
     private FinBertSentimentAnalyzer finBertSentimentAnalyzer;
+
+
+
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
