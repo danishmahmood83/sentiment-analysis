@@ -76,7 +76,7 @@ public class StockSentimentScheduler {
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
-           // sentimentService.fetchAndSave(s.getSymbol());
+            sentimentService.fetchAndSave(s.getSymbol());
             checkAndNotifyThreshold(s.getSymbol());
 
         }

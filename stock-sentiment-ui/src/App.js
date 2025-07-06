@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SymbolSearch from "./components/SymbolSearch";
 import TrackedSymbolDropdown from "./components/TrackedSymbolDropdown";
 import SymbolChartViewer from "./components/SymbolChartViewer";
-
+import NotificationPanel from "./components/NotificationPanel";
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -16,6 +16,7 @@ function App() {
       <SymbolSearch onSymbolAdded={handleUpdate} />
       <TrackedSymbolDropdown onSymbolRemoved={handleUpdate} refreshKey={refreshKey} />
       <SymbolChartViewer refreshKey={refreshKey} />
+      <NotificationPanel />
     </div>
   );
 }
