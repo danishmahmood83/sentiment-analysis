@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const meta = {
+  title: 'Symbol Search',
+  description: 'I am a description, and I can create multiple tags',
+  tags: ['autodocs'],
+  canonical: 'http://example.com/path/to/page',
+  meta: {
+    charset: 'utf-8',
+    name: {
+      keywords: 'react,meta,document,html,tags'
+    }
+  }
+}
+
 function SymbolSearch({ onSymbolAdded }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);

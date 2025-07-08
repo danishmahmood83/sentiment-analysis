@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const meta = {
+  title: 'Tracked Symbol Dropdown',
+  description: 'I am a description, and I can create multiple tags',
+  tags: ['autodocs'],
+  canonical: 'http://example.com/path/to/page',
+  meta: {
+    charset: 'utf-8',
+    name: {
+      keywords: 'react,meta,document,html,tags'
+    }
+  }
+}
+
 const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   const [symbols, setSymbols] = useState([]);
   const [selectedSymbol, setSelectedSymbol] = useState("");
