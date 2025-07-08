@@ -9,6 +9,7 @@ export default {
 export const selectedSymbol = {
     args: {
         selectedSymbol: 'TSLA',
+        analysisMethod: 'gpt',
         // ... other props
     },
 };
