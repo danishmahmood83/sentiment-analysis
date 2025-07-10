@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Button from "./Button";
 
 const meta = {
   title: 'Symbol Search',
@@ -81,12 +82,11 @@ function SymbolSearch({ onSymbolAdded }) {
             if (e.key === "Enter") handleSearch();
           }}
         />
-        <button
+        <Button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Search
-        </button>
+        </Button>
       </div>
 
       {loading && <p>Loading...</p>}

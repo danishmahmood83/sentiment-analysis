@@ -2,6 +2,7 @@ package com.socialsentiment.scheduler;
 
 import com.socialsentiment.controller.TrackedSymbolController;
 import com.socialsentiment.entity.TrackedSymbol;
+import com.socialsentiment.repository.StockSentimentRepository;
 import com.socialsentiment.repository.TrackedSymbolRepository;
 import com.socialsentiment.service.SentimentService;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,13 @@ import static org.mockito.Mockito.*;
 class StockSentimentSchedulerTest {
 
     @Mock
-    private TrackedSymbolRepository repo;
+    private TrackedSymbolRepository trackedSymbolRepository;
 
     @Mock
-    private SentimentService service;
+    private SentimentService sentimentService;
+
+    @Mock // <--- ADD THIS MOCK!
+    private StockSentimentRepository stockSentimentRepository; // Mock for StockSentimentRepository
 
     @InjectMocks
     private StockSentimentScheduler scheduler;
@@ -31,8 +35,8 @@ class StockSentimentSchedulerTest {
 
         TrackedSymbol symbol = new TrackedSymbol();
         symbol.setSymbol("GOOG");
-        when(repo.findAll()).thenReturn(List.of(symbol));
+        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
         scheduler.scheduledFetch();
-        verify(service).fetchAndSave("GOOG");
+        verify(sentimentService).fetchAndSave("GOOG");
     }
 }

@@ -5,17 +5,12 @@ export default {
     component: SentimentChart
 }
 
-const Template = {
+const selectedSymbol = {
     args: {
         selectedSymbol: 'TSLA',
-        analysisMethod: 'gpt',
+        // analysisMethod: 'gpt',
         // ... other props
     },
 };
 
-//export const chart = () => <SentimentChart symbol={selectedSymbol, analysisMethod} ></SentimentChart>
-export const chart = Template.bind({})
-chart.args = {
-    selectedSymbol: 'TSLA',
-    analysisMethod: 'gpt',
-}
+export const chart = () => <SentimentChart symbol={selectedSymbol} ></SentimentChart>

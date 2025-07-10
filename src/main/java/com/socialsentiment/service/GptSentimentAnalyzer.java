@@ -13,6 +13,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Service that provides sentiment analysis for financial text data
  * using the OpenAI GPT API. This class integrates with GPT models
@@ -23,7 +26,7 @@ import java.net.http.HttpResponse;
 @Service
 public class GptSentimentAnalyzer {
 
-
+    private static final Logger logger = LoggerFactory.getLogger(FmpSearchService.class);
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private HttpClient httpClient = HttpClient.newHttpClient();
     private ObjectMapper mapper = new ObjectMapper();
@@ -92,7 +95,7 @@ public class GptSentimentAnalyzer {
             else return "neutral";
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while searching symbols: {}", e.getMessage());
             return "neutral"; // fallback
         }
     }
