@@ -1,13 +1,16 @@
 import React from 'react';
-import PropTypes from "prop-types";
-
 
 const Button = ({
                     children,
+                    label,
+                    primary = false,
+                    size = 'medium',
                     onClick,
                     disabled = false,
                     type = 'button',
-                    ...props }) => {
+                    backgroundColor,
+                    ...props
+                }) => {
     const sizeClasses = {
         small: 'px-3 py-1 text-sm',
         medium: 'px-4 py-2',
@@ -25,26 +28,13 @@ const Button = ({
             type={type}
             onClick={onClick}
             disabled={disabled}
-            style={backgroundCOlor ? { backgroundColor } : {}}
+            className={classes}
+            style={backgroundColor ? { backgroundColor } : {}}
             {...props}
         >
             {label || children}
         </button>
     );
 };
-
-Button.propTypes = {
-    /** Is this the principal call to action on the page? */
-    primary: PropTypes.bool,
-    /** What background color to use */
-    backgroundColor: PropTypes.string,
-    /** How large should the button be? */
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-    /** Button contents */
-    label: PropTypes.string.isRequired,
-    /** Optional click handler */
-    onClick: PropTypes.func,
-};
-
 
 export default Button;
