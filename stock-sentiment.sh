@@ -10,8 +10,12 @@ python -m http.server 80
 
 # 4. Open browser to http://localhost:8080
 
+# Start Kafka Container
+docker run -p 9092:9092 apache/kafka:4.0.0
+
 # Start React
-npm start
-# Start Storybook
 cd stock-sentiment-ui
+npm start
+
+# Start Storybook
 npm run storybook
