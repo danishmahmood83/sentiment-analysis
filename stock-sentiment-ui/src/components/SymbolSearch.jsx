@@ -109,12 +109,12 @@ function SymbolSearch({ onSymbolAdded }) {
       )}
 
       {selectedSymbol && (
-        <button
+        <Button
           onClick={handleAddToScheduler}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-2"
         >
           ➕ Add to Scheduler
-        </button>
+        </Button>
       )}
 
       {message && (

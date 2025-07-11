@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "./Button";
+import Dropdown from "./Dropdown";
 
 const meta = {
   title: 'Tracked Symbol Dropdown',
@@ -43,30 +45,26 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
     }
   };
 
-  return (
-    <div className="mt-4">
-      <select
-        className="w-full p-2 border rounded mb-4"
-        value={selectedSymbol}
-        onChange={(e) => setSelectedSymbol(e.target.value)}
-      >
-        <option value="">-- Select Symbol to Remove --</option>
-        {symbols.map((item) => (
-          <option key={item.id} value={item.symbol}>
-            {item.symbol}
-          </option>
-        ))}
-      </select>
+  const handleSymbolChange = (symbol) => {
+    setSelectedSymbol(symbol);
+  };
 
-      {selectedSymbol && (
-        <button
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          onClick={handleRemove}
-        >
-          Remove
-        </button>
-      )}
-    </div>
+  return (
+      <div className="flex gap-2 items-center">
+        <Dropdown
+            symbols={symbols}
+            selectedSymbol={selectedSymbol}
+            onSymbolChange={handleSymbolChange}
+            placeholder="-- Select Symbol to Remove --"
+            className="flex-1"
+        />
+
+        {selectedSymbol && (
+            <Button onClick={handleRemove} primary>
+              Remove
+            </Button>
+        )}
+      </div>
   );
 };
 
