@@ -6,11 +6,45 @@ import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
+
+/**
+ * A service for performing sentiment analysis of text data using the Stanford CoreNLP library.
+ *
+ * This class leverages Stanford CoreNLP's sentiment analysis capabilities to evaluate the sentiment
+ * of financial messages. The sentiment is categorized into three types: "bullish", "bearish", or "neutral",
+ * based on the sentiment classification provided by the library.
+ *
+ * The analysis includes the following processing steps that are configured using CoreNLP annotators:
+ * - Tokenization
+ * - Sentence splitting
+ * - Part-of-speech tagging
+ * - Lemmatization
+ * - Parsing
+ * - Sentiment analysis
+ *
+ * The resulting sentiment is transformed into financial sentiment indicators ("bullish", "bearish", "neutral")
+ * based on predefined mapping logic.
+ */
 @Service
 public class CoreNlpSentimentAnalyzer {
 
     private final StanfordCoreNLP pipeline;
 
+    /**
+     * Constructs a new instance of CoreNlpSentimentAnalyzer with a pre-configured StanfordCoreNLP pipeline.
+     *
+     * The pipeline is initialized with a set of annotators required for performing sentiment analysis,
+     * including:
+     * - Tokenization
+     * - Sentence splitting
+     * - Part-of-speech tagging
+     * - Lemmatization
+     * - Parsing
+     * - Sentiment analysis
+     *
+     * This configuration ensures that the CoreNLP sentiment analysis engine is ready to process text
+     * and categorize sentiment effectively.
+     */
     public CoreNlpSentimentAnalyzer() {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,sentiment");
@@ -19,6 +53,21 @@ public class CoreNlpSentimentAnalyzer {
 
 
 
+    /**
+     * Analyzes the sentiment of a financial message for a given symbol and categorizes it as
+     * "bullish", "bearish", or "neutral".
+     *
+     * The method uses the Stanford CoreNLP sentiment analysis library to determine the sentiment
+     * of the provided message. Sentiment is mapped into financial sentiment categories as follows:
+     * - "positive" and "very positive" are mapped to "bullish".
+     * - "negative" and "very negative" are mapped to "bearish".
+     * - Any other sentiment, including the lack of sentences, is mapped to "neutral".
+     *
+     * @param message The financial message to be analyzed for sentiment.
+     * @param symbol The financial symbol associated with the message.
+     * @return A string indicating the financial sentiment of the message:
+     *         "bullish", "bearish", or "neutral".
+     */
     public String analyzeSentiment(String message,String symbol) {
         String text = String.format("Financial sentiment for %s: %s", symbol, message);
         CoreDocument document = new CoreDocument(text);

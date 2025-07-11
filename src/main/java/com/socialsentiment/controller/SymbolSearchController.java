@@ -20,16 +20,25 @@ public class SymbolSearchController {
     @Autowired
     private final FmpSearchService searchService;
 
+    /**
+     * Constructs a new instance of SymbolSearchController.
+     *
+     * @param searchService the FmpSearchService instance used for performing
+     *                      financial symbol search operations
+     */
     public SymbolSearchController(FmpSearchService searchService) {
         this.searchService = searchService;
     }
 
     /**
-     * Performs a search for symbols based on the provided query.
-     * Delegates the functionality to the `searchService` to fetch symbol data.
+     * Searches for financial symbols based on the provided query string.
      *
-     * @param query the search query string used to find relevant symbols
-     * @return a {@code JsonNode} containing the search results from the external service
+     * The method calls the `searchSymbols` service to perform a search
+     * query and returns the result as a JSON node.
+     *
+     * @param query the search query string used to filter financial symbols
+     * @return a {@code JsonNode} containing the list of financial symbols
+     *         that match the provided query
      */
     @GetMapping
     public JsonNode search(@RequestParam String query) {

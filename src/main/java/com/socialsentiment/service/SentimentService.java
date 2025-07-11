@@ -93,6 +93,17 @@ public class SentimentService {
         }
     }
 
+    /**
+     * Saves a record of stock sentiment analysis to the repository if a record with the same
+     * message ID and analysis method does not already exist.
+     *
+     * @param symbol         The stock symbol associated with the sentiment.
+     * @param message        The content of the message being analyzed.
+     * @param messageId      The unique ID of the message.
+     * @param sentiment      The sentiment determined by the analysis (e.g., positive, negative, neutral).
+     * @param analysisMethod The method or tool used to perform sentiment analysis (e.g., "gpt", "stanford", "finbert").
+     * @param createdAt      The timestamp indicating when the sentiment analysis was performed and recorded.
+     */
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
         if (!repository.existsByMessageIdAndAnalysisMethod(messageId, analysisMethod)) {
