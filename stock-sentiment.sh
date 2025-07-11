@@ -1,3 +1,4 @@
+
 # 1. Generate Javadoc (Maven example)
 mvn clean javadoc:javadoc
 
@@ -8,3 +9,9 @@ cd target/site/apidocs
 python -m http.server 80
 
 # 4. Open browser to http://localhost:8080
+
+# Start React
+npm start
+# Start Storybook
+cd stock-sentiment-ui
+npm run storybook
