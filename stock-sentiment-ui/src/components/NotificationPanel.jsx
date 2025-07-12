@@ -43,7 +43,7 @@ const NotificationPanel = () => {
             boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
           }}
         >
-          <b>{notif.symbol}</b> sentiment reached <b>{notif.sentiment}</b> with count {notif.count}
+          <b>{notif.symbol}</b> sentiment reached <b>{notif.sentiment}</b> with  {notif.percent.toFixed(2)} %
           <br />
           <small>{new Date(notif.timestamp).toLocaleTimeString()}</small>
           <button

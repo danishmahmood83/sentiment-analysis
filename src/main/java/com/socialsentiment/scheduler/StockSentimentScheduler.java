@@ -88,14 +88,31 @@ public class StockSentimentScheduler {
 
         long bullishCount = sentimentCounts.getOrDefault("bullish", 0L);
         long bearishCount = sentimentCounts.getOrDefault("bearish", 0L);
+        long neutralCount = sentimentCounts.getOrDefault("neutral", 0L);
+
+        long total = bullishCount + bearishCount + neutralCount;
+
+        // Avoid division by zero
+        if (total == 0) return;
+
+        double bullishPct = (bullishCount * 100.0) / total;
+        double bearishPct = (bearishCount * 100.0) / total;
+        double neutralPct = (neutralCount * 100.0) / total;
+
 
         if (bullishCount >= 50) {
-            String msg = symbol + ":bullish:" + bullishCount;
+            String msg = symbol + ":bullish:" + bullishPct;
             notificationProducer.sendNotification(msg);
         }
 
         if (bearishCount >= 50) {
-            String msg = symbol + ":bearish:" + bearishCount;
+            String msg = symbol + ":bearish:" + bearishPct;
+            notificationProducer.sendNotification(msg);
+        }
+
+
+        if (neutralCount >= 50) {
+            String msg = symbol + ":neutral:" + neutralPct;
             notificationProducer.sendNotification(msg);
         }
 
