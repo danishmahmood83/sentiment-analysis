@@ -33,3 +33,6 @@ build/
 .vscode/
 node_modules/
 stock-sentiment-ui/node_modules/
+
+*storybook.log
+storybook-static

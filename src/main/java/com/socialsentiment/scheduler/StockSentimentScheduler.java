@@ -77,13 +77,13 @@ public class StockSentimentScheduler {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
             sentimentService.fetchAndSave(s.getSymbol());
-            checkAndNotifyThreshold(s.getSymbol());
+            //checkAndNotifyThreshold(s.getSymbol()); // commented out Kafka 
 
         }
     }
 
     public void checkAndNotifyThreshold(String symbol) {
-        // Query the repository to count sentiment by type for this symbol
+        // Query the repository to count sentiment by type for this symbol 
         Map<String, Long> sentimentCounts = stockSentimentRepository.countBySymbolGroupBySentiment(symbol);
 
         long bullishCount = sentimentCounts.getOrDefault("bullish", 0L);
@@ -91,12 +91,12 @@ public class StockSentimentScheduler {
 
         if (bullishCount >= 50) {
             String msg = symbol + ":bullish:" + bullishCount;
-            notificationProducer.sendNotification(msg);
+            //notificationProducer.sendNotification(msg); // commented out Kafka 
         }
 
         if (bearishCount >= 50) {
             String msg = symbol + ":bearish:" + bearishCount;
-            notificationProducer.sendNotification(msg);
+            //notificationProducer.sendNotification(msg); // commented out Kafka 
         }
 
     }

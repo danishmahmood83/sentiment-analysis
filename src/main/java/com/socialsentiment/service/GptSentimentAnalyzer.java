@@ -1,17 +1,19 @@
 package com.socialsentiment.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 
 /**
  * Service that provides sentiment analysis for financial text data
@@ -23,7 +25,10 @@ import java.net.http.HttpResponse;
 @Service
 public class GptSentimentAnalyzer {
 
+    // Define logger instance for this class - added for logger 
+    private static final Logger logger = LoggerFactory.getLogger(GptSentimentAnalyzer.class);
 
+    // OpenAI endpoint and HTTP Tools
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private HttpClient httpClient = HttpClient.newHttpClient();
     private ObjectMapper mapper = new ObjectMapper();
@@ -42,6 +47,8 @@ public class GptSentimentAnalyzer {
      */
     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
+            // log the start of a sentiment analysis 
+            logger.info("Analyze sentiment for symbol: {} with text:{}", symbol, inputText);
             // Prompt to send
             String prompt = String.format(
                     """
