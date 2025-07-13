@@ -19,6 +19,10 @@ import java.util.List;
 @RestController
 public class NotificationController {
 
+    /**
+     * The {@code notificationRepository} is a final instance of {@code NotificationRepository}
+     * used to interact with the persistence layer for managing and retrieving notification entities.
+     */
     private final NotificationRepository notificationRepository;
 
     /**

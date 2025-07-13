@@ -17,6 +17,9 @@ import java.util.Properties;
 @Service
 public class CoreNlpSentimentAnalyzer {
 
+    /**
+     * A pipeline instance of StanfordCoreNLP used for natural language processing tasks.
+     */
     private final StanfordCoreNLP pipeline;
 
     /**
@@ -27,8 +30,6 @@ public class CoreNlpSentimentAnalyzer {
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,sentiment");
         this.pipeline = new StanfordCoreNLP(props);
     }
-
-
 
     /**
      * Analyzes the sentiment of a financial message for a given symbol and categorizes it as

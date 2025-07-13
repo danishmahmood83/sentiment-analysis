@@ -17,8 +17,22 @@ import java.time.LocalDateTime;
 @Service
 public class NotificationConsumer {
 
+    /**
+     * Reference to the {@code NotificationRepository}, which is responsible for managing
+     * and accessing {@code Notification} entities in the database.
+     *
+     * It enables the processing and persistence of notifications consumed by the
+     * {@code NotificationConsumer} service from Kafka messages.
+     */
     private final NotificationRepository notificationRepository;
 
+    /**
+     * Constructs a new {@code NotificationConsumer} instance with the specified
+     * {@code NotificationRepository}.
+     *
+     * @param notificationRepository the repository used for managing and accessing
+     *                                {@code Notification} entities in the database
+     */
     public NotificationConsumer(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }

@@ -10,8 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationProducer {
 
+    /**
+     * KafkaTemplate instance used for producing and sending messages to a Kafka topic.
+     * This is configured to work with String key and String value pairs.
+     */
     private final KafkaTemplate<String, String> kafkaTemplate;
 
+    /**
+     * The name of the Kafka topic to which stock notification messages are sent.
+     * This topic is used by the NotificationProducer service to publish messages.
+     */
     private static final String TOPIC = "stock-notifications";
 
     /**

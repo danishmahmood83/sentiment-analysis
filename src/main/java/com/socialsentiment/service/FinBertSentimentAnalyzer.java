@@ -22,10 +22,25 @@ import java.net.http.HttpResponse;
 @Service
 public class FinBertSentimentAnalyzer {
 
+    /**
+     * The base URL for the HuggingFace Inference API used to interact with the FinBERT model.
+     *
+     * This constant is specific to the {@code FinBertSentimentAnalyzer} service, where it is used
+     * to construct HTTP requests for invoking the API.
+     */
     private static final String API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert";
+    /**
+     * The API key required for authenticating requests to the HuggingFace Inference API.
+     */
     private static final String API_KEY = "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";  // Replace with your actual key
 
+    /**
+     * The HTTP client used to send requests to external APIs.
+     */
     private HttpClient client = HttpClient.newHttpClient();
+    /**
+     * ObjectMapper instance used for JSON serialization and deserialization.
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
 

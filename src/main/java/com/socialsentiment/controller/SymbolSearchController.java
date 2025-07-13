@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/search")
 public class SymbolSearchController {
 
+    /**
+     * The {@code searchService} variable is an instance of {@link FmpSearchService},
+     * which is responsible for interacting with the Financial Modeling Prep (FMP) API
+     * to perform search operations for financial symbols.
+     */
     @Autowired
     private final FmpSearchService searchService;
 

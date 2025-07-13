@@ -17,6 +17,10 @@ import java.util.List;
 @RequestMapping("/api/tracked")
 public class TrackedSymbolController {
 
+    /**
+     * The {@code TrackedSymbolRepository} variable is an instance of the repository interface
+     * responsible for performing database operations on {@code TrackedSymbol} entities.
+     */
     @Autowired
     private TrackedSymbolRepository repository;
 

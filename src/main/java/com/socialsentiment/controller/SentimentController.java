@@ -19,9 +19,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/sentiment")
 public class SentimentController {
 
+    /**
+     * The {@code StockSentimentRepository} instance used for performing data access operations
+     * related to {@code StockSentiment} entities in the application.
+     */
     @Autowired
     private StockSentimentRepository repository;
 
+    /**
+     * The {@code service} variable is an instance of {@link SentimentService}, which encapsulates the core business
+     * logic for handling stock sentiment data. It provides functionality to interact with, analyze, and fetch real-time
+     * sentiment data for stocks.
+     */
     @Autowired
     private SentimentService service;
 

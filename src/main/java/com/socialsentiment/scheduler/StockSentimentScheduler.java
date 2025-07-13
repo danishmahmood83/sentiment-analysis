@@ -21,12 +21,25 @@ import java.util.Map;
  */
 @Component
 public class StockSentimentScheduler {
+    /**
+     * An instance of {@code SentimentService} to manage the process of fetching,
+     * analyzing, and storing stock sentiment data.
+     */
     @Autowired
     SentimentService sentimentService;
+    /**
+     * Repository for managing and accessing {@code TrackedSymbol} entities.
+     */
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
+    /**
+     * A component responsible for producing and sending notification messages to Kafka.
+     */
     @Autowired
     private NotificationProducer notificationProducer;
+    /**
+     * Repository for managing stock sentiment data persistence in the scheduling service.
+     */
     @Autowired
     private StockSentimentRepository  stockSentimentRepository;
 
