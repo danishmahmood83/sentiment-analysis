@@ -59,12 +59,12 @@ public class NotificationConsumer {
             if (parts.length == 3) {
                 String symbol = parts[0];
                 String sentiment = parts[1];
-                Long count = Long.parseLong(parts[2]);
+                double percent = Double.parseDouble(parts[2]);
 
                 Notification notification = new Notification();
                 notification.setSymbol(symbol);
                 notification.setSentiment(sentiment);
-                notification.setCount(count);
+                notification.setPercent(percent);
                 notification.setTimestamp(LocalDateTime.now());
                 notification.setViewed(false);
 

@@ -35,7 +35,7 @@ public class Notification {
 
     private String symbol;
     private String sentiment;
-    private Long count;
+    private double percent;
     private LocalDateTime timestamp = LocalDateTime.now();
     private boolean viewed = false;
 
@@ -65,12 +65,12 @@ public class Notification {
         this.sentiment = sentiment;
     }
 
-    public Long getCount() {
-        return count;
+    public double getPercent() {
+        return percent;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setPercent(double percent) {
+        this.percent = percent;
     }
 
     public LocalDateTime getTimestamp() {

@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -22,10 +23,9 @@ class StockSentimentSchedulerTest {
     private TrackedSymbolRepository trackedSymbolRepository;
 
     @Mock
-    private SentimentService sentimentService;
-
-    @Mock // <--- ADD THIS MOCK!
-    private StockSentimentRepository stockSentimentRepository; // Mock for StockSentimentRepository
+    private SentimentService service;
+    @Mock
+    private StockSentimentRepository stockSentimentRepository;
 
     @InjectMocks
     private StockSentimentScheduler scheduler;
@@ -35,7 +35,11 @@ class StockSentimentSchedulerTest {
 
         TrackedSymbol symbol = new TrackedSymbol();
         symbol.setSymbol("GOOG");
-        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
+
+        when(repo.findAll()).thenReturn(List.of(symbol));
+        when(repo.findAll()).thenReturn(List.of(symbol));
+        when(stockSentimentRepository.countBySymbolGroupBySentiment(any())).thenReturn(new HashMap<>());
+
         scheduler.scheduledFetch();
         verify(sentimentService).fetchAndSave("GOOG");
     }
