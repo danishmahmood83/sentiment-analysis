@@ -6,7 +6,7 @@ mvn clean javadoc:javadoc
 cd target/site/apidocs
 
 # 3. Start local server
-python -m http.server 80
+open -a Terminal -e bash -c "cd \"$SERVE_DIR\" && python3 -m http.server 80; echo 'Server stopped.'; read -p 'Press Enter to close this window...'"
 
 # 4. Open browser to http://localhost:8080
 open "http://localhost:80"
