@@ -9,6 +9,7 @@ const config = {
   "addons": [
     "@storybook/addon-webpack5-compiler-swc",
     "@storybook/addon-docs",
+    "@storybook/addon-jest",
   ],
   "framework": {
     "name": "@storybook/react-webpack5",
