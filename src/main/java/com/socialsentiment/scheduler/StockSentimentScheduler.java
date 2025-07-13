@@ -18,23 +18,6 @@ import java.util.Map;
  * that fetches sentiment information for tracked stock symbols and saves the data
  * to the database.
  *
- * Responsibilities:
- * - Retrieve all tracked stock symbols from the repository.
- * - For each tracked symbol, invoke the sentiment service to fetch and analyze
- *   sentiment data.
- * - Persist the processed data into the sentiment repository.
- *
- * Dependencies:
- * - {@code SentimentService}: Handles fetching and sentiment analysis logic.
- * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
- *
- * Scheduling:
- * - The task is executed periodically with a fixed rate of 60,000 milliseconds (1 minute).
- *
- * Annotations:
- * - {@code @Component}: Marks this class as a Spring-managed component.
- * - {@code @Autowired}: Injects dependencies automatically.
- * - {@code @Scheduled}: Defines the periodic schedule for the execution of tasks.
  */
 @Component
 public class StockSentimentScheduler {
@@ -54,23 +37,6 @@ public class StockSentimentScheduler {
      *
      * This method is executed at a fixed rate of 60,000 milliseconds (1 minute) using
      * Spring's {@code @Scheduled} annotation. It performs the following actions:
-     *
-     * 1. Retrieves the list of all tracked stock symbols from the {@code TrackedSymbolRepository}.
-     * 2. Iterates over the retrieved symbols.
-     * 3. Invokes the {@code fetchAndSave} method of the {@code SentimentService} for each symbol.
-     *
-     * The {@code SentimentService} handles the fetching of sentiment data from an external API,
-     * performs sentiment analysis, and persists the results into the database.
-     *
-     * Dependencies:
-     * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
-     * - {@code SentimentService}: Handles fetching, sentiment analysis, and data persistence.
-     *
-     * Scheduling:
-     * - The method is executed periodically with a fixed delay of 60,000 milliseconds (1 minute).
-     *
-     * Annotation:
-     * - {@code @Scheduled}: Specifies the task scheduler's fixed interval for execution.
      */
     @Scheduled(fixedRate = 60000)
     public void scheduledFetch() {
@@ -82,6 +48,12 @@ public class StockSentimentScheduler {
         }
     }
 
+    /**
+     * Checks the distribution of sentiment counts for a given stock symbol and sends
+     * notifications if any sentiment type (bullish, bearish, or neutral) meets a threshold.
+     *
+     * @param symbol the stock symbol for which sentiment counts are analyzed
+     */
     public void checkAndNotifyThreshold(String symbol) {
         // Query the repository to count sentiment by type for this symbol
         Map<String, Long> sentimentCounts = stockSentimentRepository.countBySymbolGroupBySentiment(symbol);

@@ -12,19 +12,6 @@ import java.util.List;
 /**
  * Controller that provides endpoints for managing and interacting with notifications.
  *
- * Responsibilities:
- * - Fetching a list of unread notifications.
- * - Marking a specific notification as viewed.
- *
- * Endpoints:
- * 1. `GET /api/notifications`:
- *    - Retrieves a list of unread notifications in descending order of timestamp.
- *    - A notification is considered unread if its `viewed` flag is set to `false`.
- *
- * 2. `POST /api/notifications/{id}/viewed`:
- *    - Marks a specific notification as viewed by updating its `viewed` flag to `true`.
- *    - The notification is identified via its unique ID.
- *
  * Dependencies:
  * - `NotificationRepository`: Used for database operations related to notifications, such as fetching
  *   unread notifications and saving changes to a notification's state.

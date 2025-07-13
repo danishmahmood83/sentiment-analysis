@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
  * specific attributes. Extends the {@code JpaRepository} interface to leverage
  * basic CRUD operations and query capabilities.
  *
- * Key responsibilities:
- * - Retrieve sentiments based on stock symbols.
- * - Check existence of sentiments by unique message IDs.
  */
 public interface StockSentimentRepository extends JpaRepository<StockSentiment, Long> {
     List<StockSentiment> findBySymbol(String symbol);

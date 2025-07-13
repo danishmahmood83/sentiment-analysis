@@ -17,10 +17,6 @@ import java.net.http.HttpResponse;
  * The FinBertSentimentAnalyzer class provides functionality for analyzing financial sentiments
  * of a given textual message associated with a symbol using the FinBERT model hosted on HuggingFace.
  *
- * The class leverages the HuggingFace Inference API for processing the input text and retrieves
- * the sentiment prediction. The sentiment is categorized into three labels: bullish, bearish, or neutral,
- * based on the FinBERT model's output.
- *
  * This class acts as a service component to integrate sentiment analysis into an application.
  */
 @Service
@@ -36,10 +32,6 @@ public class FinBertSentimentAnalyzer {
     /**
      * Analyzes the sentiment of a financial message associated with a specific stock symbol
      * using the FinBERT model through the HuggingFace Inference API.
-     *
-     * This method processes the given message and determines whether the sentiment
-     * is "bullish," "bearish," or "neutral" based on the highest confidence score
-     * output by the FinBERT model.
      *
      * @param symbol The stock symbol associated with the financial message (e.g., "AAPL" for Apple Inc.).
      * @param message The financial message to be analyzed for sentiment.

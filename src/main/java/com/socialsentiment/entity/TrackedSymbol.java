@@ -9,19 +9,7 @@ import java.time.LocalDateTime;
  * Represents a tracked stock symbol, including its related metadata.
  * This entity is mapped to the "tracked_symbols" table in the database.
  *
- * Each tracked symbol has an identifier, a stock symbol, a name, and a
- * timestamp indicating when it was created. The creation timestamp is
- * automatically set when the entity is persisted.
- *
- * Fields:
- * - `id`: The unique identifier for the tracked symbol. It is generated automatically.
- * - `symbol`: The stock symbol being tracked (e.g., "AAPL" for Apple Inc.).
- * - `name`: The name associated with the tracked symbol (e.g., "Apple Inc.").
- * - `createdAt`: The timestamp when the entity was created, automatically set before persisting.
- *
- * Behavior:
- * - The `onCreate` method is triggered before the entity is persisted to set the `createdAt` field to the current timestamp.
- */
+ **/
 @Entity
 @Table(name = "tracked_symbols")
 public class TrackedSymbol {
