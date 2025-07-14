@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// add import for slf4j logger via lombok
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j // enables us of log for structured logging
 public class NotificationController {
 
     private final NotificationRepository notificationRepository;
@@ -33,7 +37,8 @@ public class NotificationController {
 
     @GetMapping("/api/notifications")
     public List<Notification> getUnreadNotifications() {
-        //  Custom metric increment
+        // log the request for tracking
+        log.info("Fetching unread notifications"); // do it before querying repository
         List<Notification>  list=notificationRepository.findByViewedFalseOrderByTimestampDesc();
         unreadNotificationCount.set(list.size());
         return list;
@@ -41,9 +46,12 @@ public class NotificationController {
 
     @PostMapping("/api/notifications/{id}/viewed")
     public void markAsViewed(@PathVariable Long id) {
+        // log the id that is being updated
+        log.info("Marking notification {} as viewed" , id);
         notificationRepository.findById(id).ifPresent(notification -> {
             notification.setViewed(true);
             notificationRepository.save(notification);
+            log.debug("Notification {} marked as viewed" , id); // log after saved
         });
     }
 }

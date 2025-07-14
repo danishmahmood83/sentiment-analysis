@@ -3,6 +3,9 @@ package com.socialsentiment.controller;
 
 import com.socialsentiment.entity.TrackedSymbol;
 import com.socialsentiment.repository.TrackedSymbolRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tracked")
+@Slf4j // enables us of log for structured logging 
 public class TrackedSymbolController {
 
     @Autowired
@@ -27,6 +31,7 @@ public class TrackedSymbolController {
      */
     @GetMapping
     public List<TrackedSymbol> getAll() {
+        log.info("Fetching all tracked symbols"); //log fetch
         return repository.findAll();
     }
 
@@ -38,6 +43,7 @@ public class TrackedSymbolController {
      */
     @PostMapping
     public TrackedSymbol addSymbol(@RequestBody TrackedSymbol symbol) {
+        log.info("Adding tracked symbol: {}", symbol.getSymbol()); //log fetch
         return repository.save(symbol);
     }
 
@@ -48,6 +54,7 @@ public class TrackedSymbolController {
      */
     @DeleteMapping("/{symbol}")
     public void delete(@PathVariable String symbol) {
+        log.info("Deleting tracked symbol: {}", symbol); //log delete
         repository.deleteBySymbol(symbol);
     }
 }

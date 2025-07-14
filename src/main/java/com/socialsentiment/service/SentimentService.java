@@ -16,6 +16,11 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+// Import SLF4J logger
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 /**
  * Service that manages the process of fetching, analyzing, and storing
  * stock sentiment data from external APIs. Integrates with external
@@ -24,6 +29,9 @@ import java.time.LocalDateTime;
  */
 @Service
 public class SentimentService {
+
+    // Define a logger for this class
+    private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
 
     @Autowired
     private StockSentimentRepository repository;
@@ -35,10 +43,9 @@ public class SentimentService {
     private FinBertSentimentAnalyzer finBertSentimentAnalyzer;
 
 
-
-
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     /**
@@ -49,6 +56,9 @@ public class SentimentService {
      */
     public void fetchAndSave(String symbol) {
         try {
+
+            logger.info("Fetching message for symbols: {}", symbol); // logging start of method 
+
             String url = "https://api.stocktwits.com/api/2/streams/symbol/" + symbol + ".json";
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -87,11 +97,23 @@ public class SentimentService {
                     saveSentimentRecord(symbol, fullMessage, messageId, finbertSentiment, "finbert", createdAt);
                 }
             }
+            logger.info("Completed processing messages for symbol: {}",symbol);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.error("Error during fetch and save for symbol: " + symbol, e);
         }
     }
+    /**
+     * Persists a new sentiment analysis record in the database if it does not exist. 
+     * 
+     * @param symbol Stock ticker
+     * @param message Raw message from Stocktwits
+     * @param messageId Unique Stocktwits message ID 
+     * @param sentiment Result from sentiment analyzer 
+     * @param analysisMethod Name of analyzer(gtp, stanford, finbert)
+     * @param createdAt Timestamp of analysis 
+     */
 
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
