@@ -72,31 +72,48 @@ public class StockSentimentScheduler {
      * Annotation:
      * - {@code @Scheduled}: Specifies the task scheduler's fixed interval for execution.
      */
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 300000)
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
             sentimentService.fetchAndSave(s.getSymbol());
-            //checkAndNotifyThreshold(s.getSymbol()); // commented out Kafka 
+            checkAndNotifyThreshold(s.getSymbol());
 
         }
     }
 
     public void checkAndNotifyThreshold(String symbol) {
-        // Query the repository to count sentiment by type for this symbol 
+        // Query the repository to count sentiment by type for this symbol
         Map<String, Long> sentimentCounts = stockSentimentRepository.countBySymbolGroupBySentiment(symbol);
 
         long bullishCount = sentimentCounts.getOrDefault("bullish", 0L);
         long bearishCount = sentimentCounts.getOrDefault("bearish", 0L);
+        long neutralCount = sentimentCounts.getOrDefault("neutral", 0L);
 
-        if (bullishCount >= 50) {
-            String msg = symbol + ":bullish:" + bullishCount;
-            //notificationProducer.sendNotification(msg); // commented out Kafka 
+        long total = bullishCount + bearishCount + neutralCount;
+
+        // Avoid division by zero
+        if (total == 0) return;
+
+        double bullishPct = (bullishCount * 100.0) / total;
+        double bearishPct = (bearishCount * 100.0) / total;
+        double neutralPct = (neutralCount * 100.0) / total;
+
+
+        if (bullishPct >= 50) {
+            String msg = symbol + ":bullish:" + bullishPct;
+            notificationProducer.sendNotification(msg);
         }
 
-        if (bearishCount >= 50) {
-            String msg = symbol + ":bearish:" + bearishCount;
-            //notificationProducer.sendNotification(msg); // commented out Kafka 
+        if (bearishPct >= 50) {
+            String msg = symbol + ":bearish:" + bearishPct;
+            notificationProducer.sendNotification(msg);
+        }
+
+
+        if (neutralPct >= 50) {
+            String msg = symbol + ":neutral:" + neutralPct;
+            notificationProducer.sendNotification(msg);
         }
 
     }
