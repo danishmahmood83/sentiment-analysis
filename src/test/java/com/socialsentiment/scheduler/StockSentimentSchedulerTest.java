@@ -36,11 +36,11 @@ class StockSentimentSchedulerTest {
         TrackedSymbol symbol = new TrackedSymbol();
         symbol.setSymbol("GOOG");
 
-        when(repo.findAll()).thenReturn(List.of(symbol));
-        when(repo.findAll()).thenReturn(List.of(symbol));
+        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
+        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
         when(stockSentimentRepository.countBySymbolGroupBySentiment(any())).thenReturn(new HashMap<>());
 
         scheduler.scheduledFetch();
-        verify(sentimentService).fetchAndSave("GOOG");
+        verify(service).fetchAndSave("GOOG");
     }
 }

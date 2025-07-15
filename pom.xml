@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>  <!-- Or ojdbc10, ojdbc11, etc. depending on your Oracle version -->
-			<version>12.2.0.1</version>  <!-- Or the appropriate version -->
+			<version>23.4.0.24.05</version>  <!-- Or the appropriate version -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

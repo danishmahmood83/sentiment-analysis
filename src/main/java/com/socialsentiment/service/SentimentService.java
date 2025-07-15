@@ -79,7 +79,7 @@ public class SentimentService {
             JsonNode messages = root.get("messages");
 
             for (JsonNode message : messages) {
-                long messageId = message.get("id").asLong();
+                long messageId = System.currentTimeMillis(); //message.get("id").asLong();
 
                 boolean gptExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "gpt");
                 boolean stanfordExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "stanford");
@@ -135,7 +135,7 @@ public class SentimentService {
             record.setMessage(message);
             record.setSentiment(sentiment);
             record.setAnalysisMethod(analysisMethod);
-            record.setMessageId(messageId);
+            record.setMessageId(System.currentTimeMillis());
             record.setCreatedAt(createdAt);
             repository.save(record);
         }
