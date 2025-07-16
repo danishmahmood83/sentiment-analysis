@@ -20,12 +20,13 @@ import static org.mockito.Mockito.*;
 class StockSentimentSchedulerTest {
 
     @Mock
-    private TrackedSymbolRepository trackedSymbolRepository;
+    private TrackedSymbolRepository repo;
 
     @Mock
     private SentimentService service;
     @Mock
     private StockSentimentRepository stockSentimentRepository;
+
 
     @InjectMocks
     private StockSentimentScheduler scheduler;
@@ -35,9 +36,8 @@ class StockSentimentSchedulerTest {
 
         TrackedSymbol symbol = new TrackedSymbol();
         symbol.setSymbol("GOOG");
-
-        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
-        when(trackedSymbolRepository.findAll()).thenReturn(List.of(symbol));
+        when(repo.findAll()).thenReturn(List.of(symbol));
+        when(repo.findAll()).thenReturn(List.of(symbol));
         when(stockSentimentRepository.countBySymbolGroupBySentiment(any())).thenReturn(new HashMap<>());
 
         scheduler.scheduledFetch();
