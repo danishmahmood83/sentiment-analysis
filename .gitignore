@@ -33,6 +33,7 @@ build/
 .vscode/
 node_modules/
 stock-sentiment-ui/node_modules/
+
 .DS_Store
 .node_modules
 

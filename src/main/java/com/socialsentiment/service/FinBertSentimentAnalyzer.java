@@ -12,16 +12,45 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+
+/**
+ * The FinBertSentimentAnalyzer class provides functionality for analyzing financial sentiments
+ * of a given textual message associated with a symbol using the FinBERT model hosted on HuggingFace.
+ *
+ * This class acts as a service component to integrate sentiment analysis into an application.
+ */
 @Service
 public class FinBertSentimentAnalyzer {
 
+    /**
+     * The base URL for the HuggingFace Inference API used to interact with the FinBERT model.
+     */
     private static final String API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert";
+
+    /**
+     * The API key required for authenticating requests to the HuggingFace Inference API.
+     */
     private static final String API_KEY = "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";  // Replace with your actual key
 
+    /**
+     * The HTTP client used to send requests to external APIs.
+     */
     private HttpClient client = HttpClient.newHttpClient();
+    /**
+     * ObjectMapper instance used for JSON serialization and deserialization.
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
+    /**
+     * Analyzes the sentiment of a financial message associated with a specific stock symbol
+     * using the FinBERT model through the HuggingFace Inference API.
+     *
+     * @param symbol The stock symbol associated with the financial message (e.g., "AAPL" for Apple Inc.).
+     * @param message The financial message to be analyzed for sentiment.
+     * @return A string indicating the financial sentiment, which can be "bullish," "bearish," or "neutral."
+     *         Returns "neutral" as a fallback in case of errors or if no sentiment could be determined.
+     */
     public String analyzeSentimentWithFinBERT(String symbol, String message) {
         try {
 

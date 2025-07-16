@@ -1,5 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Button from "./Button";
+
+const meta = {
+  title: 'Symbol Search',
+  description: 'I am a description, and I can create multiple tags',
+  tags: ['autodocs'],
+  canonical: 'http://example.com/path/to/page',
+  meta: {
+    charset: 'utf-8',
+    name: {
+      keywords: 'react,meta,document,html,tags'
+    }
+  }
+}
 
 function SymbolSearch({ onSymbolAdded }) {
   const [query, setQuery] = useState("");
@@ -68,12 +82,11 @@ function SymbolSearch({ onSymbolAdded }) {
             if (e.key === "Enter") handleSearch();
           }}
         />
-        <button
+        <Button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Search
-        </button>
+        </Button>
       </div>
 
       {loading && <p>Loading...</p>}
@@ -96,12 +109,12 @@ function SymbolSearch({ onSymbolAdded }) {
       )}
 
       {selectedSymbol && (
-        <button
+        <Button
           onClick={handleAddToScheduler}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-2"
         >
           ➕ Add to Scheduler
-        </button>
+        </Button>
       )}
 
       {message && (

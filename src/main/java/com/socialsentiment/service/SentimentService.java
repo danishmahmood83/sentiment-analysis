@@ -33,20 +33,44 @@ public class SentimentService {
     // Define a logger for this class
     private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
 
+    /**
+     * The StockSentimentRepository instance used to interact with the database
+     * {@code StockSentiment} entities.
+     */
     @Autowired
     private StockSentimentRepository repository;
+
+    /**
+     * A component that performs sentiment analysis using GPT-based models.
+     */
     @Autowired
     private GptSentimentAnalyzer gptSentimentAnalyzer;
+
+    /**
+     * A component used to perform sentiment analysis on stock-related messages using
+     * the Stanford CoreNLP library.
+     */
     @Autowired
     private CoreNlpSentimentAnalyzer coreNlpSentimentAnalyzer;
+
+    /**
+     * A component utilized to perform sentiment analysis on stock-related messages
+     * using the FinBERT model.
+     */
     @Autowired
     private FinBertSentimentAnalyzer finBertSentimentAnalyzer;
 
-
+    /**
+     * Represents an instance of {@link HttpClient} used for sending HTTP requests
+     * and receiving HTTP responses in the application.
+     */
     private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    /**
+     * Represents an instance of {@link ObjectMapper} used for JSON processing within the
+     * {@code SentimentService}.
+     */
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-
 
     /**
      * Fetches stock-related messages from an external API, performs sentiment analysis
@@ -104,6 +128,7 @@ public class SentimentService {
             logger.error("Error during fetch and save for symbol: " + symbol, e);
         }
     }
+    
     /**
      * Persists a new sentiment analysis record in the database if it does not exist. 
      * 
@@ -115,6 +140,17 @@ public class SentimentService {
      * @param createdAt Timestamp of analysis 
      */
 
+    /**
+     * Saves a record of stock sentiment analysis to the repository if a record with the same
+     * message ID and analysis method does not already exist.
+     *
+     * @param symbol         The stock symbol associated with the sentiment.
+     * @param message        The content of the message being analyzed.
+     * @param messageId      The unique ID of the message.
+     * @param sentiment      The sentiment determined by the analysis (e.g., positive, negative, neutral).
+     * @param analysisMethod The method or tool used to perform sentiment analysis (e.g., "gpt", "stanford", "finbert").
+     * @param createdAt      The timestamp indicating when the sentiment analysis was performed and recorded.
+     */
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
         if (!repository.existsByMessageIdAndAnalysisMethod(messageId, analysisMethod)) {

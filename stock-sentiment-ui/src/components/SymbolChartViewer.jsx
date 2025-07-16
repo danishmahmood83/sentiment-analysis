@@ -1,5 +1,20 @@
+// SymbolChartViewer.jsx
 import React, { useEffect, useState } from "react";
 import SentimentChart from "./SentimentChart";
+import Dropdown from "./Dropdown";
+
+const meta = {
+  title: 'Symbol Chart Viewer',
+  description: 'I am a description, and I can create multiple tags',
+  tags: ['autodocs'],
+  canonical: 'http://example.com/path/to/page',
+  meta: {
+    charset: 'utf-8',
+    name: {
+      keywords: 'react,meta,document,html,tags'
+    }
+  }
+}
 
 const AVAILABLE_METHODS = ["finbert", "gpt", "stanford"]; // adjust to your actual methods
 
@@ -24,60 +39,60 @@ const SymbolChartViewer = ({ refreshKey }) => {
 
   const toggleMethod = (method) => {
     setSelectedMethods(prev =>
-      prev.includes(method)
-        ? prev.filter(m => m !== method)
-        : [...prev, method]
+        prev.includes(method)
+            ? prev.filter(m => m !== method)
+            : [...prev, method]
     );
   };
 
+  const handleSymbolChange = (symbol) => {
+    setSelectedSymbol(symbol);
+  };
+
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-xl font-bold mb-2">Select Symbol to View Sentiment</h2>
-      <select
-        className="w-full p-2 border rounded mb-4"
-        value={selectedSymbol}
-        onChange={(e) => setSelectedSymbol(e.target.value)}
-      >
-        <option value="">-- Choose Symbol --</option>
-        {symbols.map(item => (
-          <option key={item.id} value={item.symbol}>
-            {item.symbol}
-          </option>
-        ))}
-      </select>
+      <div className="p-4 max-w-4xl mx-auto">
+        <h2 className="text-xl font-bold mb-2">Select Symbol to View Sentiment</h2>
 
-      {selectedSymbol && (
-        <>
-          <h3 className="mb-2">Select Analysis Methods to Compare</h3>
-          <div className="flex gap-4 mb-4">
-            {AVAILABLE_METHODS.map(method => (
-              <label key={method} style={{ cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  checked={selectedMethods.includes(method)}
-                  onChange={() => toggleMethod(method)}
-                />{" "}
-                {method}
-              </label>
-            ))}
-          </div>
+        <Dropdown
+            symbols={symbols}
+            selectedSymbol={selectedSymbol}
+            onSymbolChange={handleSymbolChange}
+            className="mb-4"
+            placeholder="-- Choose Symbol --"
+        />
 
-          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-            {selectedMethods.length === 0 ? (
-              <p>Select at least one analysis method to view charts.</p>
-            ) : (
-              selectedMethods.map(method => (
-                <SentimentChart
-                  key={method}
-                  symbol={selectedSymbol}
-                  analysisMethod={method}
-                />
-              ))
-            )}
-          </div>
-        </>
-      )}
-    </div>
+        {selectedSymbol && (
+            <>
+              <h3 className="mb-2">Select Analysis Methods to Compare</h3>
+              <div className="flex gap-4 mb-4">
+                {AVAILABLE_METHODS.map(method => (
+                    <label key={method} style={{ cursor: "pointer" }}>
+                      <input
+                          type="checkbox"
+                          checked={selectedMethods.includes(method)}
+                          onChange={() => toggleMethod(method)}
+                      />{" "}
+                      {method}
+                    </label>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                {selectedMethods.length === 0 ? (
+                    <p>Select at least one analysis method to view charts.</p>
+                ) : (
+                    selectedMethods.map(method => (
+                        <SentimentChart
+                            key={method}
+                            symbol={selectedSymbol}
+                            analysisMethod={method}
+                        />
+                    ))
+                )}
+              </div>
+            </>
+        )}
+      </div>
   );
 };
 
