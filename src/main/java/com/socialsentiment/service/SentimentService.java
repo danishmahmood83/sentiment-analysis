@@ -159,7 +159,7 @@ public class SentimentService {
             record.setMessage(message);
             record.setSentiment(sentiment);
             record.setAnalysisMethod(analysisMethod);
-            record.setMessageId(System.currentTimeMillis());
+            record.setMessageId(messageId);
             record.setCreatedAt(createdAt);
             repository.save(record);
         }
