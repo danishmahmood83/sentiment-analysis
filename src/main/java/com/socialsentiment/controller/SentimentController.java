@@ -11,12 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// add import for slf4j logger via lombok
+import lombok.extern.slf4j.Slf4j;
+
+
+
+
 /**
  * This controller provides REST endpoints for managing and interacting with stock sentiment data.
  * It supports obtaining sentiment details, providing a sentiment summary, and fetching sentiment data for a specific stock symbol.
  */
 @RestController
 @RequestMapping("/api/sentiment")
+@Slf4j // enables us of log for structured logging 
 public class SentimentController {
 
     /**
@@ -42,6 +49,7 @@ public class SentimentController {
      */
     @GetMapping("/{symbol}")
     public List<StockSentiment> getSentiments(@PathVariable String symbol) {
+        log.info("Fetching sentiments for symbol: {}", symbol); //log fetch
         return repository.findBySymbol(symbol);
     }
 
@@ -57,6 +65,7 @@ public class SentimentController {
     public Map<String, Long> getSentimentSummaryByMethod(
             @PathVariable String symbol,
             @RequestParam(required = false) String analysisMethod) {
+        log.info("Summarizing  sentiments for symbol: {}, method: {}", symbol, analysisMethod); // log context
         List<StockSentiment> sentiments;
         if (analysisMethod != null && !analysisMethod.isEmpty()) {
             sentiments = repository.findBySymbolAndAnalysisMethod(symbol, analysisMethod);
@@ -76,6 +85,7 @@ public class SentimentController {
      */
     @PostMapping("/{symbol}/fetch")
     public ResponseEntity<String> fetchAndSaveNow(@PathVariable String symbol) {
+        log.info("Triggering sentiment fetch and save for symbol: {}, method: {}", symbol); // log action
         service.fetchAndSave(symbol);
         return ResponseEntity.ok("Fetched and saved sentiment for: " + symbol);
     }

@@ -33,6 +33,11 @@ build/
 .vscode/
 node_modules/
 stock-sentiment-ui/node_modules/
+<<<<<<< HEAD
+=======
+.DS_Store
+.node_modules
+>>>>>>> origin
 
 *storybook.log
 storybook-static

@@ -51,7 +51,7 @@ public class StockSentimentScheduler {
      * This method is executed at a fixed rate of 60,000 milliseconds (1 minute) using
      * Spring's {@code @Scheduled} annotation. It performs the following actions:
      */
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 300000)
     public void scheduledFetch() {
         List<TrackedSymbol> symbols = trackedSymbolRepository.findAll();
         for (TrackedSymbol s : symbols) {
@@ -85,18 +85,18 @@ public class StockSentimentScheduler {
         double neutralPct = (neutralCount * 100.0) / total;
 
 
-        if (bullishCount >= 50) {
+        if (bullishPct >= 50) {
             String msg = symbol + ":bullish:" + bullishPct;
             notificationProducer.sendNotification(msg);
         }
 
-        if (bearishCount >= 50) {
+        if (bearishPct >= 50) {
             String msg = symbol + ":bearish:" + bearishPct;
             notificationProducer.sendNotification(msg);
         }
 
 
-        if (neutralCount >= 50) {
+        if (neutralPct >= 50) {
             String msg = symbol + ":neutral:" + neutralPct;
             notificationProducer.sendNotification(msg);
         }

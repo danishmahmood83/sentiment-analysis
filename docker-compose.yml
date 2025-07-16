@@ -22,3 +22,24 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "4000:3000"
+    environment:
+        - GF_SECURITY_ADMIN_USER=admin
+        - GF_SECURITY_ADMIN_PASSWORD=admin
+        - GF_SMTP_ENABLED=true
+        - GF_SMTP_HOST=smtp.gmail.com:587
+        - GF_SMTP_USER=danishmahmood1983@gmail.com
+        - GF_SMTP_PASSWORD=rtaf koch ixwu vvbf
+        - GF_SMTP_FROM_ADDRESS=danishmahmood1983@gmail.com
+        - GF_SMTP_FROM_NAME=Grafana Alerts
+

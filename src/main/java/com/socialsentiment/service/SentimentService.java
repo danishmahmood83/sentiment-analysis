@@ -16,6 +16,11 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+// Import SLF4J logger
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 /**
  * Service that manages the process of fetching, analyzing, and storing
  * stock sentiment data from external APIs. Integrates with external
@@ -24,6 +29,9 @@ import java.time.LocalDateTime;
  */
 @Service
 public class SentimentService {
+
+    // Define a logger for this class
+    private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
 
     /**
      * The StockSentimentRepository instance used to interact with the database
@@ -72,6 +80,9 @@ public class SentimentService {
      */
     public void fetchAndSave(String symbol) {
         try {
+
+            logger.info("Fetching message for symbols: {}", symbol); // logging start of method 
+
             String url = "https://api.stocktwits.com/api/2/streams/symbol/" + symbol + ".json";
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -79,7 +90,7 @@ public class SentimentService {
             JsonNode messages = root.get("messages");
 
             for (JsonNode message : messages) {
-                long messageId = System.currentTimeMillis(); //message.get("id").asLong();
+                long messageId = message.get("id").asLong(); //System.currentTimeMillis(); //
 
                 boolean gptExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "gpt");
                 boolean stanfordExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "stanford");
@@ -110,11 +121,24 @@ public class SentimentService {
                     saveSentimentRecord(symbol, fullMessage, messageId, finbertSentiment, "finbert", createdAt);
                 }
             }
+            logger.info("Completed processing messages for symbol: {}",symbol);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.error("Error during fetch and save for symbol: " + symbol, e);
         }
     }
+    
+    /**
+     * Persists a new sentiment analysis record in the database if it does not exist. 
+     * 
+     * @param symbol Stock ticker
+     * @param message Raw message from Stocktwits
+     * @param messageId Unique Stocktwits message ID 
+     * @param sentiment Result from sentiment analyzer 
+     * @param analysisMethod Name of analyzer(gtp, stanford, finbert)
+     * @param createdAt Timestamp of analysis 
+     */
 
     /**
      * Saves a record of stock sentiment analysis to the repository if a record with the same
