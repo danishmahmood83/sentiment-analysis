@@ -25,6 +25,5 @@
     <!-- Verbose logging for package -->
     <logger name="com.socialsentiment" level="DEBUG" />
 
-    
 </configuration> 
 
