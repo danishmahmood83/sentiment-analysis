@@ -21,6 +21,10 @@ import java.util.List;
 @Slf4j // enables us of log for structured logging 
 public class TrackedSymbolController {
 
+    /**
+     * The {@code TrackedSymbolRepository} variable is an instance of the repository interface
+     * responsible for performing database operations on {@code TrackedSymbol} entities.
+     */
     @Autowired
     private TrackedSymbolRepository repository;
 

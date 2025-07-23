@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Button from "./Button";
+//import "../App.css";
 
 function SymbolSearch({ onSymbolAdded }) {
   const [query, setQuery] = useState("");
@@ -56,8 +58,9 @@ function SymbolSearch({ onSymbolAdded }) {
 
   return (
     <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow">
+
       <h2 className="text-xl font-semibold mb-4">Search Stock Symbol</h2>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap4 mb-4">
         <input
           type="text"
           placeholder="Enter company name or symbol..."
@@ -68,12 +71,12 @@ function SymbolSearch({ onSymbolAdded }) {
             if (e.key === "Enter") handleSearch();
           }}
         />
-        <button
+        <Button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Search
-        </button>
+          label = "Search"
+          backgroundColor="skyblue"
+          size="small">
+        </Button>
       </div>
 
       {loading && <p>Loading...</p>}
@@ -96,12 +99,12 @@ function SymbolSearch({ onSymbolAdded }) {
       )}
 
       {selectedSymbol && (
-        <button
+        <Button
           onClick={handleAddToScheduler}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-2"
-        >
-          ➕ Add to Scheduler
-        </button>
+          label = "Add to Scheduler"
+          backgroundColor="skyblue"
+          size="small">
+        </Button>
       )}
 
       {message && (
