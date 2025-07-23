@@ -7,7 +7,6 @@ import java.net.http.HttpResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Service
 public class GptSentimentAnalyzer {
 
-    // Define logger instance for this class - added for logger 
+    // Define logger instance for this class - added for logger
     private static final Logger logger = LoggerFactory.getLogger(GptSentimentAnalyzer.class);
 
     // OpenAI endpoint and HTTP Tools
@@ -47,7 +46,7 @@ public class GptSentimentAnalyzer {
      */
     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
-            // log the start of a sentiment analysis 
+            // log the start of a sentiment analysis
             logger.info("Analyze sentiment for symbol: {} with text:{}", symbol, inputText);
             // Prompt to send
             String prompt = String.format(
@@ -80,7 +79,7 @@ public class GptSentimentAnalyzer {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
-                    .header("Authorization", "Bearer " + "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")
+                    .header("Authorization", "Bearer " + "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")
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();

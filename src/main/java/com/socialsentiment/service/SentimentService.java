@@ -30,13 +30,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SentimentService {
 
-    // Define a logger for this class
-    private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
-
     /**
      * The StockSentimentRepository instance used to interact with the database
      * {@code StockSentiment} entities.
      */
+    // Define a logger for this class
+    private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
+
     @Autowired
     private StockSentimentRepository repository;
 
@@ -64,6 +64,7 @@ public class SentimentService {
      * Represents an instance of {@link HttpClient} used for sending HTTP requests
      * and receiving HTTP responses in the application.
      */
+
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     /**
@@ -81,7 +82,7 @@ public class SentimentService {
     public void fetchAndSave(String symbol) {
         try {
 
-            logger.info("Fetching message for symbols: {}", symbol); // logging start of method 
+            logger.info("Fetching message for symbols: {}", symbol); // logging start of method
 
             String url = "https://api.stocktwits.com/api/2/streams/symbol/" + symbol + ".json";
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -90,8 +91,7 @@ public class SentimentService {
             JsonNode messages = root.get("messages");
 
             for (JsonNode message : messages) {
-                long messageId = System.currentTimeMillis(); //message.get("id").asLong();
-                logger.error("*******Message id: {}", messageId);
+                long messageId = message.get("id").asLong();
 
                 boolean gptExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "gpt");
                 boolean stanfordExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "stanford");
@@ -129,28 +129,15 @@ public class SentimentService {
             logger.error("Error during fetch and save for symbol: " + symbol, e);
         }
     }
-    
     /**
-     * Persists a new sentiment analysis record in the database if it does not exist. 
-     * 
+     * Persists a new sentiment analysis record in the database if it does not exist.
+     *
      * @param symbol Stock ticker
      * @param message Raw message from Stocktwits
-     * @param messageId Unique Stocktwits message ID 
-     * @param sentiment Result from sentiment analyzer 
+     * @param messageId Unique Stocktwits message ID
+     * @param sentiment Result from sentiment analyzer
      * @param analysisMethod Name of analyzer(gtp, stanford, finbert)
-     * @param createdAt Timestamp of analysis 
-     */
-
-    /**
-     * Saves a record of stock sentiment analysis to the repository if a record with the same
-     * message ID and analysis method does not already exist.
-     *
-     * @param symbol         The stock symbol associated with the sentiment.
-     * @param message        The content of the message being analyzed.
-     * @param messageId      The unique ID of the message.
-     * @param sentiment      The sentiment determined by the analysis (e.g., positive, negative, neutral).
-     * @param analysisMethod The method or tool used to perform sentiment analysis (e.g., "gpt", "stanford", "finbert").
-     * @param createdAt      The timestamp indicating when the sentiment analysis was performed and recorded.
+     * @param createdAt Timestamp of analysis
      */
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
