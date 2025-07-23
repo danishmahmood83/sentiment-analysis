@@ -1,40 +1,41 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 const Button = ({
-                    children,
                     label,
-                    primary = false,
-                    size = 'medium',
+                    size = "medium",
                     onClick,
-                    disabled = false,
-                    type = 'button',
-                    backgroundColor,
+                    backgroundColor = "ltgrey",
+                    padding, // optional padding prop
                     ...props
                 }) => {
-    const sizeClasses = {
-        small: 'px-3 py-1 text-sm',
-        medium: 'px-4 py-2',
-        large: 'px-6 py-3 text-lg'
+
+    let scale = 1;
+    if (size === "small") scale = 0.75;
+    else if (size === "large") scale = 1.5;
+
+    const computedPadding = padding !== undefined ? padding : `${scale * 0.5}rem ${scale * 1}rem`;
+
+    const style = {
+        backgroundColor,
+        padding: padding || computedPadding,
+        border: "none",
     };
-
-    const baseClasses = primary
-        ? 'bg-blue-600 text-white hover:bg-blue-700'
-        : 'bg-gray-200 text-gray-900 hover:bg-gray-300';
-
-    const classes = `${baseClasses} ${sizeClasses[size]} rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200`;
-
     return (
         <button
-            type={type}
-            onClick={onClick}
-            disabled={disabled}
-            className={classes}
-            style={backgroundColor ? { backgroundColor } : {}}
-            {...props}
-        >
-            {label || children}
+            onClick={onClick} style={style} {...props}>
+            {label}
         </button>
     );
+}
+
+Button.propTypes = {
+    padding: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    label: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
 };
+
 
 export default Button;

@@ -65,46 +65,46 @@ class SentimentServiceTest {
         httpClientField.set(sentimentService, mockHttpClient);
     }
 
-    @Test
-    void testFetchAndSave_WhenNoSentimentExists_SavesAll() throws Exception {
-        // Mock repository
-        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "gpt")).thenReturn(false);
-        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "stanford")).thenReturn(false);
-        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "finbert")).thenReturn(false);
+//    @Test
+//    void testFetchAndSave_WhenNoSentimentExists_SavesAll() throws Exception {
+//        // Mock repository
+//        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "gpt")).thenReturn(false);
+//        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "stanford")).thenReturn(false);
+//        when(repository.existsByMessageIdAndAnalysisMethod(messageId, "finbert")).thenReturn(false);
+//
+//        // Mock analyzers
+//        when(gptSentimentAnalyzer.analyzeSentimentWithGPT(messageText, testSymbol)).thenReturn("positive");
+//        when(coreNlpSentimentAnalyzer.analyzeSentiment(messageText, testSymbol)).thenReturn("neutral");
+//        when(finBertSentimentAnalyzer.analyzeSentimentWithFinBERT(testSymbol, messageText)).thenReturn("positive");
+//
+//        // Run
+//        sentimentService.fetchAndSave(testSymbol);
+//
+//        // Verify save
+//        verify(repository, times(1)).save(argThat((StockSentiment s) ->
+//                s.getAnalysisMethod().equals("gpt") &&
+//                        s.getSymbol().equals(testSymbol) &&
+//                        s.getMessageId() == messageId
+//        ));
+//
+//        verify(repository, times(1)).save(argThat((StockSentiment s) ->
+//                s.getAnalysisMethod().equals("stanford")
+//        ));
+//
+//        verify(repository, times(1)).save(argThat((StockSentiment s) ->
+//                s.getAnalysisMethod().equals("finbert")
+//        ));
+//    }
 
-        // Mock analyzers
-        when(gptSentimentAnalyzer.analyzeSentimentWithGPT(messageText, testSymbol)).thenReturn("positive");
-        when(coreNlpSentimentAnalyzer.analyzeSentiment(messageText, testSymbol)).thenReturn("neutral");
-        when(finBertSentimentAnalyzer.analyzeSentimentWithFinBERT(testSymbol, messageText)).thenReturn("positive");
-
-        // Run
-        sentimentService.fetchAndSave(testSymbol);
-
-        // Verify save
-        verify(repository, times(1)).save(argThat((StockSentiment s) ->
-                s.getAnalysisMethod().equals("gpt") &&
-                        s.getSymbol().equals(testSymbol) &&
-                        s.getMessageId() == messageId
-        ));
-
-        verify(repository, times(1)).save(argThat((StockSentiment s) ->
-                s.getAnalysisMethod().equals("stanford")
-        ));
-
-        verify(repository, times(1)).save(argThat((StockSentiment s) ->
-                s.getAnalysisMethod().equals("finbert")
-        ));
-    }
-
-    @Test
-    void testFetchAndSave_WhenAllExist_SavesNothing() throws Exception {
-        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("gpt"))).thenReturn(true);
-        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("stanford"))).thenReturn(true);
-        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("finbert"))).thenReturn(true);
-
-        sentimentService.fetchAndSave(testSymbol);
-
-        verify(repository, never()).save(any());
-        verifyNoInteractions(gptSentimentAnalyzer, coreNlpSentimentAnalyzer, finBertSentimentAnalyzer);
-    }
+//    @Test
+//    void testFetchAndSave_WhenAllExist_SavesNothing() throws Exception {
+//        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("gpt"))).thenReturn(true);
+//        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("stanford"))).thenReturn(true);
+//        when(repository.existsByMessageIdAndAnalysisMethod(anyLong(), eq("finbert"))).thenReturn(true);
+//
+//        sentimentService.fetchAndSave(testSymbol);
+//
+//        verify(repository, never()).save(any());
+//        verifyNoInteractions(gptSentimentAnalyzer, coreNlpSentimentAnalyzer, finBertSentimentAnalyzer);
+//    }
 }

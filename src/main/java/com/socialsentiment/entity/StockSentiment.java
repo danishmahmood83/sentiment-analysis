@@ -62,7 +62,7 @@ public class StockSentiment {
      * This variable is a {@code Long} type and can be utilized to correlate or reference stock sentiment
      * messages across different entities or external systems.
      */
-    @Column(name = "message_id", unique = true)
+    @Column(name = "message_id")
     private Long messageId;
 
     /**

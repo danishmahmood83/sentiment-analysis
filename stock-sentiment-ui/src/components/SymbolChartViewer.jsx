@@ -3,19 +3,6 @@ import React, { useEffect, useState } from "react";
 import SentimentChart from "./SentimentChart";
 import Dropdown from "./Dropdown";
 
-const meta = {
-  title: 'Symbol Chart Viewer',
-  description: 'I am a description, and I can create multiple tags',
-  tags: ['autodocs'],
-  canonical: 'http://example.com/path/to/page',
-  meta: {
-    charset: 'utf-8',
-    name: {
-      keywords: 'react,meta,document,html,tags'
-    }
-  }
-}
-
 const AVAILABLE_METHODS = ["finbert", "gpt", "stanford"]; // adjust to your actual methods
 
 const SymbolChartViewer = ({ refreshKey }) => {

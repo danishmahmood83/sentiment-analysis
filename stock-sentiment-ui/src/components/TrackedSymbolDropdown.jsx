@@ -60,8 +60,11 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
         />
 
         {selectedSymbol && (
-            <Button onClick={handleRemove} primary>
-              Remove
+            <Button
+                onClick={handleRemove}
+                label = "Remove"
+                backgroundColor="skyblue"
+                size="small">
             </Button>
         )}
       </div>

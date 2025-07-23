@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
     "@testing-library/dom": "^10.4.0",
     "axios": "^0.27.2",
     "chart.js": "^4.5.0",
@@ -52,12 +53,15 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "autoprefixer": "^10.4.21",
     "babel-jest": "^30.0.2",
     "cypress": "^14.5.0",
     "cypress-xpath": "^2.0.1",
     "jest": "^27.5.1",
     "playwright": "^1.53.1",
+    "postcss": "^8.5.6",
     "prop-types": "^15.8.1",
-    "storybook": "^9.0.15"
+    "storybook": "^9.0.15",
+    "tailwindcss": "^4.1.11"
   }
 }

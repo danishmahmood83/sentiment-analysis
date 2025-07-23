@@ -1,49 +1,46 @@
-import { fn } from 'storybook/test';
-
+import React from 'react';
 import Button from '../components/Button';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-  title: 'Button',
+  title: 'Components/Button',
   component: Button,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
-  },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     backgroundColor: { control: 'color' },
-  },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-};
-
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary = {
-  args: {
-    primary: true,
-    label: 'Button',
-  },
-};
-
-export const Secondary = {
-  args: {
-    label: 'Button',
+    size: {
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
+    },
+    padding: {
+      control: 'text',
+      description: 'Custom CSS padding, e.g. "1rem 2rem"',
+    },
+    onClick: { action: 'clicked' },
   },
 };
 
-export const Large = {
-  args: {
-    size: 'large',
-    label: 'Button',
-  },
+const Template = (args) => <Button {...args} />;
+
+export const Small = Template.bind({});
+Small.args = {
+  label: 'Small Button',
+  size: 'small',
 };
 
-export const Small = {
-  args: {
-    size: 'small',
-    label: 'Button',
-  },
+export const Medium = Template.bind({});
+Medium.args = {
+  label: 'Medium Button',
+  size: 'medium',
+};
+
+export const Large = Template.bind({});
+Large.args = {
+  label: 'Large Button',
+  size: 'large',
+};
+
+export const CustomPadding = Template.bind({});
+CustomPadding.args = {
+  label: 'Custom Padded Button',
+  size: 'medium',
+  padding: '1rem 2rem',
 };

@@ -30,7 +30,7 @@ public class FinBertSentimentAnalyzer {
     /**
      * The API key required for authenticating requests to the HuggingFace Inference API.
      */
-    private static final String API_KEY = "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";  // Replace with your actual key
+    private static final String API_KEY = "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";  // Replace with your actual key
 
     /**
      * The HTTP client used to send requests to external APIs.
