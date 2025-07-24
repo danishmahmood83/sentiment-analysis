@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-
 /**
  * Service that provides sentiment analysis for financial text data
  * using the OpenAI GPT API. This class integrates with GPT models
@@ -25,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Service
 public class GptSentimentAnalyzer {
 
-    // Define logger instance for this class - added for logger 
+    // Define logger instance for this class - added for logger
     private static final Logger logger = LoggerFactory.getLogger(GptSentimentAnalyzer.class);
 
     // OpenAI endpoint and HTTP Tools
@@ -47,7 +46,7 @@ public class GptSentimentAnalyzer {
      */
     public String analyzeSentimentWithGPT(String inputText,String symbol) {
         try {
-            // log the start of a sentiment analysis 
+            // log the start of a sentiment analysis
             logger.info("Analyze sentiment for symbol: {} with text:{}", symbol, inputText);
             // Prompt to send
             String prompt = String.format(
@@ -99,7 +98,7 @@ public class GptSentimentAnalyzer {
             else return "neutral";
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while searching symbols: {}", e.getMessage());
             return "neutral"; // fallback
         }
     }

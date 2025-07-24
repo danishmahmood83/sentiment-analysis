@@ -25,23 +25,48 @@ import com.socialsentiment.repository.StockSentimentRepository;
 @Service
 public class SentimentService {
 
+    /**
+     * The StockSentimentRepository instance used to interact with the database
+     * {@code StockSentiment} entities.
+     */
     // Define a logger for this class
     private static final Logger logger = LoggerFactory.getLogger(SentimentService.class);
 
     @Autowired
     private StockSentimentRepository repository;
+
+    /**
+     * A component that performs sentiment analysis using GPT-based models.
+     */
     @Autowired
     private GptSentimentAnalyzer gptSentimentAnalyzer;
+
+    /**
+     * A component used to perform sentiment analysis on stock-related messages using
+     * the Stanford CoreNLP library.
+     */
     @Autowired
     private CoreNlpSentimentAnalyzer coreNlpSentimentAnalyzer;
+
+    /**
+     * A component utilized to perform sentiment analysis on stock-related messages
+     * using the FinBERT model.
+     */
     @Autowired
     private FinBertSentimentAnalyzer finBertSentimentAnalyzer;
 
+    /**
+     * Represents an instance of {@link HttpClient} used for sending HTTP requests
+     * and receiving HTTP responses in the application.
+     */
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    /**
+     * Represents an instance of {@link ObjectMapper} used for JSON processing within the
+     * {@code SentimentService}.
+     */
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-
 
     /**
      * Fetches stock-related messages from an external API, performs sentiment analysis
@@ -110,16 +135,15 @@ public class SentimentService {
         }
     }
     /**
-     * Persists a new sentiment analysis record in the database if it does not exist. 
-     * 
+     * Persists a new sentiment analysis record in the database if it does not exist.
+     *
      * @param symbol Stock ticker
      * @param message Raw message from Stocktwits
-     * @param messageId Unique Stocktwits message ID 
-     * @param sentiment Result from sentiment analyzer 
+     * @param messageId Unique Stocktwits message ID
+     * @param sentiment Result from sentiment analyzer
      * @param analysisMethod Name of analyzer(gtp, stanford, finbert)
-     * @param createdAt Timestamp of analysis 
+     * @param createdAt Timestamp of analysis
      */
-
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
         if (!repository.existsByMessageIdAndAnalysisMethod(messageId, analysisMethod)) {

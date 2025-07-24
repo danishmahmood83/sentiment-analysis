@@ -20,26 +20,13 @@ import com.socialsentiment.service.SentimentService;
  * that fetches sentiment information for tracked stock symbols and saves the data
  * to the database.
  *
- * Responsibilities:
- * - Retrieve all tracked stock symbols from the repository.
- * - For each tracked symbol, invoke the sentiment service to fetch and analyze
- *   sentiment data.
- * - Persist the processed data into the sentiment repository.
- *
- * Dependencies:
- * - {@code SentimentService}: Handles fetching and sentiment analysis logic.
- * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
- *
- * Scheduling:
- * - The task is executed periodically with a fixed rate of 60,000 milliseconds (1 minute).
- *
- * Annotations:
- * - {@code @Component}: Marks this class as a Spring-managed component.
- * - {@code @Autowired}: Injects dependencies automatically.
- * - {@code @Scheduled}: Defines the periodic schedule for the execution of tasks.
  */
 @Component
 public class StockSentimentScheduler {
+    /**
+     * An instance of {@code SentimentService} to manage the process of fetching,
+     * analyzing, and storing stock sentiment data.
+     */
 
     /**
      * SLF4J logger for this class - standard logging interface
@@ -47,10 +34,19 @@ public class StockSentimentScheduler {
     private static final Logger logger = LoggerFactory.getLogger(StockSentimentScheduler.class); // logger setup
     @Autowired
     SentimentService sentimentService;
+    /**
+     * Repository for managing and accessing {@code TrackedSymbol} entities.
+     */
     @Autowired
     private TrackedSymbolRepository trackedSymbolRepository;
+    /**
+     * A component responsible for producing and sending notification messages to Kafka.
+     */
     @Autowired
     private NotificationProducer notificationProducer;
+    /**
+     * Repository for managing stock sentiment data persistence in the scheduling service.
+     */
     @Autowired
     private StockSentimentRepository  stockSentimentRepository;
 
@@ -63,23 +59,6 @@ public class StockSentimentScheduler {
      *
      * This method is executed at a fixed rate of 60,000 milliseconds (1 minute) using
      * Spring's {@code @Scheduled} annotation. It performs the following actions:
-     *
-     * 1. Retrieves the list of all tracked stock symbols from the {@code TrackedSymbolRepository}.
-     * 2. Iterates over the retrieved symbols.
-     * 3. Invokes the {@code fetchAndSave} method of the {@code SentimentService} for each symbol.
-     *
-     * The {@code SentimentService} handles the fetching of sentiment data from an external API,
-     * performs sentiment analysis, and persists the results into the database.
-     *
-     * Dependencies:
-     * - {@code TrackedSymbolRepository}: Provides access to the list of tracked stock symbols.
-     * - {@code SentimentService}: Handles fetching, sentiment analysis, and data persistence.
-     *
-     * Scheduling:
-     * - The method is executed periodically with a fixed delay of 60,000 milliseconds (1 minute).
-     *
-     * Annotation:
-     * - {@code @Scheduled}: Specifies the task scheduler's fixed interval for execution.
      */
     @Scheduled(fixedRate = 300000)
 
@@ -105,10 +84,12 @@ public class StockSentimentScheduler {
         logger.info("Scheduler completed processing");// log end of scheduled task
     }
 
-    /*
-     * Checks the sentiment percentages for a symbol and sends Kafak notification if any passes 50%
+    /**
+     * Checks the distribution of sentiment counts for a given stock symbol and sends
+     * notifications if any sentiment type (bullish, bearish, or neutral) meets a threshold.
+     *
+     * @param symbol the stock symbol for which sentiment counts are analyzed
      */
-
     public void checkAndNotifyThreshold(String symbol) {
         try {
             // Query the repository to count sentiment by type for this symbol
@@ -120,7 +101,7 @@ public class StockSentimentScheduler {
 
             long total = bullishCount + bearishCount + neutralCount;
 
-            // Avoid division by zero
+             // Avoid division by zero
             if (total == 0) {
                 logger.warn("No sentiment data for symbol: {}", symbol); // avoids a silent skip 
                 return;
@@ -130,6 +111,8 @@ public class StockSentimentScheduler {
             double bearishPct = (bearishCount * 100.0) / total;
             double neutralPct = (neutralCount * 100.0) / total;
 
+            // logs breakdown of sentiments for traceability 
+            logger.debug("Sentiment distribution for {} - Bullish: {}%, Neutral: {}%", symbol, bullishPct, bearishPct, neutralPct);
             // logs breakdown of sentiments for traceability 
             logger.debug("Sentiment distribution for {} - Bullish: {}%, Neutral: {}%", symbol, bullishPct, bearishPct, neutralPct);
 
