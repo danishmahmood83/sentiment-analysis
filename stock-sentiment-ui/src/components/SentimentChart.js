@@ -11,19 +11,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const meta = {
-  title: 'Sentiment Chart',
-  description: 'I am a description, and I can create multiple tags',
-  tags: ['autodocs'],
-  canonical: 'http://example.com/path/to/page',
-  meta: {
-    charset: 'utf-8',
-    name: {
-      keywords: 'react,meta,document,html,tags'
-    }
-  }
-}
-
 const SentimentChart = ({ symbol, analysisMethod }) => {
   const [chartData, setChartData] = useState(null);
 

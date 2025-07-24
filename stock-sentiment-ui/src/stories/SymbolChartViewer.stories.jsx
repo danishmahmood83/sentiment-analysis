@@ -1,4 +1,3 @@
-import {SentimentChart} from "../components/SentimentChart";
 import SymbolChartViewer from "../components/SymbolChartViewer";
 
 export default {

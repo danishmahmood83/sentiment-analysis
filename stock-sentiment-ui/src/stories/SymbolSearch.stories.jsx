@@ -1,4 +1,3 @@
-import {SentimentChart} from "../components/SentimentChart";
 import SymbolSearch from "../components/SymbolSearch";
 
 export default {
