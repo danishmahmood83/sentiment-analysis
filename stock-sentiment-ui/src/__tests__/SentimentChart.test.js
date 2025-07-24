@@ -4,7 +4,7 @@ import SentimentChart from '../components/SentimentChart'; // Adjust path if nee
 
 // Mock Pie chart from chart.js to avoid rendering real canvas
 jest.mock('react-chartjs-2', () => ({
-  Pie: ({ data, options }) => (
+  Pie: ({ data, _options }) => (
     <div data-testid="mock-pie-chart">
       <span>{JSON.stringify(data)}</span>
     </div>

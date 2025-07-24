@@ -35,6 +35,7 @@ Button.propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    style: PropTypes.object,
 };
 
 

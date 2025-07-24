@@ -3,19 +3,6 @@ import axios from "axios";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
 
-const meta = {
-  title: 'Tracked Symbol Dropdown',
-  description: 'I am a description, and I can create multiple tags',
-  tags: ['autodocs'],
-  canonical: 'http://example.com/path/to/page',
-  meta: {
-    charset: 'utf-8',
-    name: {
-      keywords: 'react,meta,document,html,tags'
-    }
-  }
-}
-
 const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   const [symbols, setSymbols] = useState([]);
   const [selectedSymbol, setSelectedSymbol] = useState("");
@@ -50,22 +37,23 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   };
 
   return (
-      <div className="flex gap-2 items-center">
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <Dropdown
             symbols={symbols}
             selectedSymbol={selectedSymbol}
             onSymbolChange={handleSymbolChange}
             placeholder="-- Select Symbol to Remove --"
-            className="flex-1"
+            className=""
         />
 
         {selectedSymbol && (
             <Button
                 onClick={handleRemove}
-                label = "Remove"
+                label="Remove"
                 backgroundColor="skyblue"
-                size="small">
-            </Button>
+                size="small"
+                style={{ marginLeft: '8px' }}
+            />
         )}
       </div>
   );
