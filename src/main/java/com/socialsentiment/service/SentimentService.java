@@ -1,25 +1,20 @@
 package com.socialsentiment.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialsentiment.entity.StockSentiment;
-import com.socialsentiment.kafka.producer.NotificationProducer;
-import com.socialsentiment.repository.StockSentimentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-// Import SLF4J logger
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socialsentiment.entity.StockSentiment;
+import com.socialsentiment.repository.StockSentimentRepository;
 
 /**
  * Service that manages the process of fetching, analyzing, and storing
@@ -57,7 +52,10 @@ public class SentimentService {
     public void fetchAndSave(String symbol) {
         try {
 
+            logger.info("-------------------------------------"); // log scheduler starts
             logger.info("Fetching message for symbols: {}", symbol); // logging start of method 
+            logger.info("-------------------------------------"); // log scheduler starts
+            
 
             String url = "https://api.stocktwits.com/api/2/streams/symbol/" + symbol + ".json";
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -73,6 +71,7 @@ public class SentimentService {
                 boolean finbertExists = repository.existsByMessageIdAndAnalysisMethod(messageId, "finbert");
 
                 if (gptExists && stanfordExists && finbertExists) {
+                    logger.debug("Message ID {} already analyzed by all models, skipping", messageId);// skips if all three analyses already exists.
                     continue;
                 }
 
@@ -83,17 +82,23 @@ public class SentimentService {
                 LocalDateTime createdAt = LocalDateTime.now();
 
                 if (!gptExists) {
+                    logger.debug("Analyzing with GPT for message ID {}", messageId);// skips if all three analyses already exists.
                     String gptSentiment = gptSentimentAnalyzer.analyzeSentimentWithGPT(fullMessage, symbol);
+                    logger.info("GPT Sentiment for {}: {}", messageId, gptSentiment);
                     saveSentimentRecord(symbol, fullMessage, messageId, gptSentiment, "gpt", createdAt);
                 }
 
                 if (!stanfordExists) {
+                    logger.debug("Analyzing with Stanford for message ID {}", messageId);// skips if all three analyses already exists.
                     String stanfordSentiment = coreNlpSentimentAnalyzer.analyzeSentiment(fullMessage,symbol);
+                    logger.info("Stanford Sentiment for {}: {}", messageId, stanfordSentiment);
                     saveSentimentRecord(symbol, fullMessage, messageId, stanfordSentiment, "stanford", createdAt);
                 }
 
                 if (!finbertExists) {
+                    logger.debug("Analyzing with FinBERT for message ID {}", messageId);// skips if all three analyses already exists.
                     String finbertSentiment = finBertSentimentAnalyzer.analyzeSentimentWithFinBERT(symbol, fullMessage);
+                    logger.info("GPT Sentiment for {}: {}", messageId, finbertSentiment);
                     saveSentimentRecord(symbol, fullMessage, messageId, finbertSentiment, "finbert", createdAt);
                 }
             }
@@ -118,6 +123,7 @@ public class SentimentService {
     private void saveSentimentRecord(String symbol, String message, long messageId,
                                      String sentiment, String analysisMethod, LocalDateTime createdAt) {
         if (!repository.existsByMessageIdAndAnalysisMethod(messageId, analysisMethod)) {
+            logger.debug("Saving record to DB: {} [{}]", analysisMethod, messageId);
             StockSentiment record = new StockSentiment();
             record.setSymbol(symbol);
             record.setMessage(message);

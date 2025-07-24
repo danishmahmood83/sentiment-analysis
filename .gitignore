@@ -34,3 +34,4 @@ build/
 node_modules/
 stock-sentiment-ui/node_modules/
 .DS_Store
+logs/application.log
