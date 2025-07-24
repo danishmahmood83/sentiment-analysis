@@ -35,7 +35,9 @@ node_modules/
 stock-sentiment-ui/node_modules/
 
 .DS_Store
-.node_modules
-
-*storybook.log
+logs/
+logs/application.log
+node_modules/
+stock-sentiment-ui/node_modules/
+.storybook.log
 storybook-static

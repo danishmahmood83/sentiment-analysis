@@ -1,5 +1,7 @@
 package com.socialsentiment.kafka.producer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NotificationProducer {
+
+    private static final Logger logger = LoggerFactory.getLogger(NotificationProducer.class); // logger setup
+
 
     /**
      * KafkaTemplate instance used for producing and sending messages to a Kafka topic.
@@ -37,6 +42,20 @@ public class NotificationProducer {
      * @param message the notification message to be sent to the Kafka topic
      */
     public void sendNotification(String message) {
-        kafkaTemplate.send(TOPIC, message);
+        // log before sending 
+        logger.info("Sending Kafka message to TOPIC: {}", TOPIC);
+        // log raw message at debug level
+        logger.debug("Message content {}", message);
+
+        try {
+            // send message to Kafka
+            kafkaTemplate.send(TOPIC, message);
+            // log before sending 
+            logger.info("Kafka message sent successfully");
+        } catch (Exception e) {
+            // log any failure to send message
+            logger.error("Failed to send Kafka message: {}", message, e);
+        }
+        
     }
 }
