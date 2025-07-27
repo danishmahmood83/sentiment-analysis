@@ -10,13 +10,16 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   const fetchTrackedSymbols = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/tracked");
+      console.log("Symbols fetched:", response.data);
       setSymbols(response.data);
+      console.log("Symbols fetched:", response.data);
     } catch (error) {
       console.error("Error fetching tracked symbols:", error);
     }
   };
 
   useEffect(() => {
+    console.log("useEffect running with refreshKey:", refreshKey);
     fetchTrackedSymbols();
   }, [refreshKey]);
 
@@ -33,32 +36,35 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   };
 
   const handleSymbolChange = (symbol) => {
+    console.log("******SYMBOL:", symbol);
     setSelectedSymbol(symbol);
   };
 
   return (
-      <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
-        <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
-        <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
-        <Dropdown
-            symbols={symbols}
-            selectedSymbol={selectedSymbol}
-            onSymbolChange={handleSymbolChange}
-            placeholder="-- Select Symbol to Remove --"
-            className="w-full sm:max-w-xs"
-        />
+      // <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow flex flex-col items-center space-y-4">
+      //   <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
+        <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
+          <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
+          <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
 
-        {selectedSymbol && (
-            <Button
-                onClick={handleRemove}
-                label="Remove"
-                backgroundColor="skyblue"
-                size="small"
-                style={{ marginLeft: '8px' }}
+            <Dropdown
+                symbols={symbols}
+                selectedSymbol={selectedSymbol}
+                onSymbolChange={handleSymbolChange}
+                placeholder="-- Select Symbol to Remove --"
+                className="w-full sm:max-w-xs"
             />
-        )}
+
+            {selectedSymbol && (
+                <Button
+                    onClick={handleRemove}
+                    label="Remove"
+                    backgroundColor="skyblue"
+                    size="small"
+                />
+            )}
+          </div>
         </div>
-      </div>
   );
 };
 

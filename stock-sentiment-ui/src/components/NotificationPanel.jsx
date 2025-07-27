@@ -33,7 +33,7 @@ const NotificationPanel = () => {
     notifications.forEach((notif) => {
       const timer = setTimeout(() => {
         dismissNotification(notif.id);
-      }, 10000);
+      }, 20000);
       return () => clearTimeout(timer);
     });
   }, [notifications]);
