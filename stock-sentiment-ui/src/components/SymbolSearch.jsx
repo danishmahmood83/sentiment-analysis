@@ -71,10 +71,11 @@ function SymbolSearch({ onSymbolAdded }) {
             if (e.key === "Enter") handleSearch();
           }}
         />
+
         <Button
           onClick={handleSearch}
           label = "Search"
-          backgroundColor="skyblue"
+          backgroundColor="bg-sky-400"
           size="small">
         </Button>
       </div>
@@ -98,14 +99,16 @@ function SymbolSearch({ onSymbolAdded }) {
         </div>
       )}
 
-      {selectedSymbol && (
-        <Button
-          onClick={handleAddToScheduler}
-          label = "Add to Scheduler"
-          backgroundColor="skyblue"
-          size="small">
-        </Button>
-      )}
+      <div className="items-center">
+        {selectedSymbol && (
+          <Button
+            onClick={handleAddToScheduler}
+            label = "Add to Scheduler"
+            backgroundColor="bg-sky-400"
+            size="small">
+          </Button>
+        )}
+      </div>
 
       {message && (
         <p className="mt-4 text-center font-medium text-blue-700">{message}</p>

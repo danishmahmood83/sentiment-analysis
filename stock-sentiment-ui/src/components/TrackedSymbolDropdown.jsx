@@ -41,8 +41,6 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   };
 
   return (
-      // <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow flex flex-col items-center space-y-4">
-      //   <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
         <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
           <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
           <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
@@ -59,7 +57,7 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
                 <Button
                     onClick={handleRemove}
                     label="Remove"
-                    backgroundColor="skyblue"
+                    backgroundColor="bg-sky-400"
                     size="small"
                 />
             )}

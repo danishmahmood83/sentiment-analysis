@@ -1,45 +1,43 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const Button = ({
                     label,
-                    size = "medium",
+                    size = 'medium',
                     onClick,
-                    backgroundColor = "ltgrey",
-                    padding, // optional padding prop
+                    backgroundColor = 'bg-gray-200', // Tailwind color
+                    className = '',
                     ...props
                 }) => {
-
-    let scale = 1;
-    if (size === "small") scale = 0.75;
-    else if (size === "large") scale = 1.5;
-
-    const computedPadding = padding !== undefined ? padding : `${scale * 0.5}rem ${scale * 1}rem`;
-
-    const style = {
-        backgroundColor,
-        padding: padding || computedPadding,
-        border: "none",
+    const sizeClasses = {
+        small: 'text-sm py-1 px-3',
+        medium: 'text-base py-2 px-4',
+        large: 'text-lg py-3 px-6',
     };
+
     return (
         <button
             onClick={onClick}
-            className={`text-white font-semibold rounded focus:outline-none hover:opacity-90 transition ${props.className}`}
-            style={style}
-            {...props}>
+            className={`
+        ${sizeClasses[size]}
+        ${backgroundColor}
+        text-white font-semibold rounded 
+        focus:outline-none hover:opacity-90 transition
+        ${className}
+      `}
+            {...props}
+        >
             {label}
         </button>
     );
-}
-
-Button.propTypes = {
-    padding: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-    label: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
-    style: PropTypes.object,
 };
 
+Button.propTypes = {
+    label: PropTypes.string.isRequired,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    onClick: PropTypes.func,
+    backgroundColor: PropTypes.string, // expects Tailwind class (e.g. 'bg-blue-500')
+    className: PropTypes.string,
+};
 
 export default Button;
