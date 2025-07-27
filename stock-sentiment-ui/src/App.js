@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './index.css';
 import SymbolSearch from "./components/SymbolSearch";
 import TrackedSymbolDropdown from "./components/TrackedSymbolDropdown";
 import SymbolChartViewer from "./components/SymbolChartViewer";
@@ -12,7 +13,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="text-center text-2xl font-bold my-4">Stock Sentiment Dashboard</h1>
+        <div className="bg-green-500 text-white p-4">Tailwind is working!</div>
+
+        <h1 className="text-center text-2xl font-bold my-4">Stock Sentiment Dashboard</h1>
       <SymbolSearch onSymbolAdded={handleUpdate} />
       <TrackedSymbolDropdown onSymbolRemoved={handleUpdate} refreshKey={refreshKey} />
       <SymbolChartViewer refreshKey={refreshKey} />

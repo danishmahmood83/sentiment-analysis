@@ -12,8 +12,7 @@ const Dropdown = ({
 
     return (
         <select
-            className={`w-full p-2 border rounded ${className}`}
-            value={selectedSymbol}
+            className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${className}`}            value={selectedSymbol}
             onChange={(e) => onSymbolChange(e.target.value)}
         >
             <option value="">{placeholder}</option>

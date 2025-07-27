@@ -23,7 +23,10 @@ const Button = ({
     };
     return (
         <button
-            onClick={onClick} style={style} {...props}>
+            onClick={onClick}
+            className={`text-white font-semibold rounded focus:outline-none hover:opacity-90 transition ${props.className}`}
+            style={style}
+            {...props}>
             {label}
         </button>
     );

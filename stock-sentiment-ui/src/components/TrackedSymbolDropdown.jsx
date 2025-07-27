@@ -37,13 +37,15 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   };
 
   return (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
+        <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
+        <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
         <Dropdown
             symbols={symbols}
             selectedSymbol={selectedSymbol}
             onSymbolChange={handleSymbolChange}
             placeholder="-- Select Symbol to Remove --"
-            className=""
+            className="w-full sm:max-w-xs"
         />
 
         {selectedSymbol && (
@@ -55,6 +57,7 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
                 style={{ marginLeft: '8px' }}
             />
         )}
+        </div>
       </div>
   );
 };

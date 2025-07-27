@@ -37,16 +37,22 @@ const SymbolChartViewer = ({ refreshKey }) => {
   };
 
   return (
-      <div className="p-4 max-w-4xl mx-auto">
-        <h2 className="text-xl font-bold mb-2">Select Symbol to View Sentiment</h2>
+      // <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
+      //   <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
+      //   <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
+      <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
+      <h2 className="text-lg font-semibold mb-4">Select Symbol to View Sentiment</h2>
+        <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
+
 
         <Dropdown
             symbols={symbols}
             selectedSymbol={selectedSymbol}
             onSymbolChange={handleSymbolChange}
-            className="mb-4"
+            className="w-full sm:max-w-xs"
             placeholder="-- Choose Symbol --"
         />
+        </div>
 
         {selectedSymbol && (
             <>
