@@ -46,6 +46,7 @@ const SymbolChartViewer = ({ refreshKey }) => {
 
 
         <Dropdown
+            data-cy="viewer-dropdown"
             symbols={symbols}
             selectedSymbol={selectedSymbol}
             onSymbolChange={handleSymbolChange}
@@ -70,7 +71,8 @@ const SymbolChartViewer = ({ refreshKey }) => {
                 ))}
               </div>
 
-              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+              <div data-cy="sentiment-chart-wrapper"
+                   style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                 {selectedMethods.length === 0 ? (
                     <p>Select at least one analysis method to view charts.</p>
                 ) : (

@@ -10,17 +10,16 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
   const fetchTrackedSymbols = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/tracked");
-      console.log("Symbols fetched:", response.data);
       setSymbols(response.data);
-      console.log("Symbols fetched:", response.data);
     } catch (error) {
       console.error("Error fetching tracked symbols:", error);
     }
   };
 
   useEffect(() => {
-    console.log("useEffect running with refreshKey:", refreshKey);
-    fetchTrackedSymbols();
+    (async () => {
+      await fetchTrackedSymbols();
+    })();
   }, [refreshKey]);
 
   const handleRemove = async () => {
@@ -46,6 +45,7 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
           <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
 
             <Dropdown
+                data-cy="symbol-dropdown-remove"
                 symbols={symbols}
                 selectedSymbol={selectedSymbol}
                 onSymbolChange={handleSymbolChange}
@@ -59,6 +59,7 @@ const TrackedSymbolDropdown = ({ onSymbolRemoved, refreshKey }) => {
                     label="Remove"
                     backgroundColor="bg-sky-400"
                     size="small"
+                    data-cy="remove-button"
                 />
             )}
           </div>

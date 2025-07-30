@@ -76,7 +76,8 @@ function SymbolSearch({ onSymbolAdded }) {
           onClick={handleSearch}
           label = "Search"
           backgroundColor="bg-sky-400"
-          size="small">
+          size="small"
+          data-cy="search-button">
         </Button>
       </div>
 
@@ -88,6 +89,7 @@ function SymbolSearch({ onSymbolAdded }) {
             className="w-full p-2 border rounded"
             defaultValue=""
             onChange={handleSelectionChange}
+            data-cy="scheduler-dropdown"
           >
             <option value="">-- Select a symbol --</option>
             {results.map((item, index) => (
@@ -102,10 +104,11 @@ function SymbolSearch({ onSymbolAdded }) {
       <div className="items-center">
         {selectedSymbol && (
           <Button
-            onClick={handleAddToScheduler}
-            label = "Add to Scheduler"
-            backgroundColor="bg-sky-400"
-            size="small">
+              data-cy="add-to-scheduler-button"
+              onClick={handleAddToScheduler}
+              label = "Add to Scheduler"
+              backgroundColor="bg-sky-400"
+              size="small">
           </Button>
         )}
       </div>

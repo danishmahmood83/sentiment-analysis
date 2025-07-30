@@ -14,11 +14,10 @@ it('types a symbol, clicks Search, and validates the results dropdown', () => {
   cy.get('input[placeholder="Enter company name or symbol..."]').type('Apple');
 
   // Step 2: Click the Search button
-  cy.get('button.bg-blue-600.text-white').should('be.visible').click();
+  cy.get('[data-cy=search-button]').should('be.visible').click();
 
   // Step 3: Validate that the dropdown appears and contains valid options
-  cy.get('select[class*="w-full"][class*="p-2"][class*="border"][class*="rounded"]')
-    .should('be.visible')
+    cy.get('[data-cy=scheduler-dropdown]')    .should('be.visible')
     .find('option')
     .should('have.length.greaterThan', 1); // Confirms options beyond placeholder
 });
@@ -28,7 +27,7 @@ it('searches for a symbol, selects it, and validates Add to Scheduler button app
   cy.get('input[placeholder="Enter company name or symbol..."]').type('Apple');
 
   // Step 2: Click the Search button
-  cy.get('button.bg-blue-600.text-white').should('be.visible').click();
+  cy.get('[data-cy=search-button]').should('be.visible').click();
 
   // Step 3: Wait for dropdown with AAPL to appear
   cy.get('select').contains('AAPL - Apple Inc. (NASDAQ)').should('exist');
@@ -48,7 +47,7 @@ it('searches for a symbol, selects it, and validates Add to Scheduler button app
 it('adds selected symbol to scheduler dropdown', () => {
   // Step 1: Type a symbol and search
   cy.get('input[placeholder="Enter company name or symbol..."]').type('Apple');
-  cy.get('button.bg-blue-600.text-white').click();
+  cy.get('[data-cy=search-button]').click();
 
   // Step 2: Wait for and select the first real option
   cy.get('select').contains('Apple').should('exist');
@@ -60,10 +59,10 @@ it('adds selected symbol to scheduler dropdown', () => {
     .select('0'); // assuming AAPL value is "0"
 
   // Step 3: Click "Add to Scheduler" button
-  cy.get('button.bg-green-600.text-white').should('be.visible').click();
+  cy.get('[data-cy=add-to-scheduler-button]').should('be.visible').click();
 
   // Step 4: Verify AAPL is now present in the 3rd <select> (scheduler list)
-  cy.get('#root > div > div:nth-child(3) > select')
+  cy.get('[data-cy=scheduler-dropdown]')
     .should('be.visible')
     .find('option')
     .should('contain.text', 'AAPL');
@@ -71,13 +70,13 @@ it('adds selected symbol to scheduler dropdown', () => {
 
 it('waits for AAPL to appear in the removal dropdown', () => {
   // First, ensure the dropdown is present and has options
-  cy.get('select.w-full.p-2.border.rounded.mb-4')
+  cy.get('[data-cy=symbol-dropdown-remove]')
     .should('be.visible')
     .find('option')
     .should('have.length.greaterThan', 1);
 
   // Retry until AAPL is available in the option list
-  cy.get('select.w-full.p-2.border.rounded.mb-4')
+  cy.get('[data-cy=symbol-dropdown-remove]')
     .find('option')
     .should($options => {
       const hasAAPL = [...$options].some(opt => opt.textContent.includes('AAPL'));
@@ -88,32 +87,37 @@ it('waits for AAPL to appear in the removal dropdown', () => {
 });
 
 it('selects a symbol from the dropdown and ensures the checkbox appears', () => {
+    cy.get('[data-cy=viewer-dropdown]')
+        .find('option')
+        .then($options => {
+            const values = [...$options].map(o => o.value);
+            console.log('Dropdown options:', values);
+        });
   // Step 1: Select the first non-placeholder option
-cy.get('select.w-full.p-2.border.rounded.mb-4')
+cy.get('[data-cy=viewer-dropdown]')
   .should('be.visible')
-  .eq(1).select('AAPL');
+  .select('AAPL');
 });
 
 it('selects a symbol and checks that a checkbox appears', () => {
   // Step 1: Select the dropdown by class (or use a more targeted selector if needed)
-  cy.get('select.w-full.p-2.border.rounded.mb-4')
-    .should('be.visible')
-    . eq(1).select('AAPL');
+    cy.get('[data-cy=viewer-dropdown]')    .should('be.visible')
+    .select('AAPL');
 
   // Step 2: Verify the checkbox shows up after selection
-  cy.get('input[type="checkbox"]')
+  cy.get('input[type="checkbox"]', { timeout: 8000 })
     .should('exist')
     .and('be.visible');
 });
 
 it('selects a symbol and checked checkbox appears', () => {
   // Step 1: Select the dropdown by class (or use a more targeted selector if needed)
-  cy.get('select.w-full.p-2.border.rounded.mb-4')
+    cy.get('[data-cy=viewer-dropdown]')
     .should('be.visible')
-    . eq(1).select('AAPL');
+    .select('AAPL');
 
   // Step 2: Verify the checkbox shows up after selection
- cy.xpath('//*[@id="root"]/div/div[3]/div[1]/label[1]/input')
+ cy.xpath('//label[contains(., "finbert")]/input[@type="checkbox"]')
    .should('exist')
    .and('be.visible')
    .check()
@@ -123,21 +127,18 @@ it('selects a symbol and checked checkbox appears', () => {
 
 it('selects AAPL, checks the checkbox, and verifies chart appears', () => {
   // Step 1: Select the dropdown and choose AAPL
-  cy.get('select.w-full.p-2.border.rounded.mb-4')
-    .should('have.length.greaterThan', 1)
-    .eq(1)
+    cy.get('select[data-cy="viewer-dropdown"]')
     .should('be.visible')
-    .select('AAPL');
+    .select('COKE');
 
   // Step 2: Check the checkbox that appears for AAPL
-  cy.xpath('//*[@id="root"]/div/div[3]/div[1]/label[1]/input')
-    .should('exist')
-    .and('be.visible')
-    .check()
-    .should('be.checked');
+    cy.contains('label', /gpt/i)
+        .find('input[type="checkbox"]')
+        .check()
+        .should('be.checked');
 
   // Step 3: Ensure the sentiment chart appears
-  cy.xpath('//*[@id="root"]/div/div[3]/div[2]/div/canvas')
+    cy.get('[data-cy=sentiment-chart-wrapper] canvas', { timeout: 8000 })
     .should('exist')
     .and('be.visible');
 });
@@ -145,12 +146,12 @@ it('selects AAPL, checks the checkbox, and verifies chart appears', () => {
 
 it('selects AAPL from removal dropdown and checks for Remove button', () => {
   // Step 1: Select AAPL from the second dropdown
-  cy.xpath('//*[@id="root"]/div/div[2]/select')
+    cy.xpath('//h2[contains(text(), "Remove Tracked Symbol")]/following::select[1]')
     .should('be.visible')
     .select('AAPL');
 
   // Step 2: Verify that the Remove button appears
-  cy.xpath('//*[@id="root"]/div/div[2]/button')
+    cy.get('[data-cy=remove-button]')
     .should('exist')
     .and('be.visible')
     .and('contain.text', 'Remove');
@@ -159,28 +160,29 @@ it('selects AAPL from removal dropdown and checks for Remove button', () => {
 it('selects AAPL from removal dropdown and clicks Remove button', () => {
   // Step 1: Select AAPL from the scheduler removal dropdown
   // Step 1: Select AAPL from the second dropdown
-  cy.xpath('//*[@id="root"]/div/div[2]/select')
+    cy.get('[data-cy=symbol-dropdown-remove]')
+  //cy.xpath('//*[@id="root"]/div/div[2]/select')
     .should('be.visible')
     .select('AAPL');
 
   // Step 2: Verify that the Remove button appears
-  cy.xpath('//*[@id="root"]/div/div[2]/button')
-    .should('exist')
-    .and('be.visible')
-    .and('contain.text', 'Remove')
-    .click();
+    cy.get('[data-cy=remove-button]')
+        .should('exist')
+        .and('be.visible')
+        .and('contain.text', 'Remove')
+        .click();
 });
 
 it('verifies AAPL is not an option in either dropdown', () => {
   // Check removal dropdown
-  cy.xpath('//*[@id="root"]/div/div[2]/select/option')
+    cy.xpath('//h2[contains(text(), "Remove Tracked Symbol")]/following::select[1]')
     .then($options => {
       const values = [...$options].map(opt => opt.value);
       expect(values).to.not.include('AAPL');
     });
 
   // Check sentiment dropdown
-  cy.xpath('//*[@id="root"]/div/div[3]/select/option')
+    cy.xpath('//h2[contains(text(), "Select Symbol to View Sentiment")]/following::select[1]')
     .then($options => {
       const values = [...$options].map(opt => opt.value);
       expect(values).to.not.include('AAPL');

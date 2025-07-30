@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="App">
-        <div className="bg-green-500 text-white p-4">Tailwind is working!</div>
+        <div className="bg-sky-800 text-white p-4"></div>
 
         <h1 className="text-center text-2xl font-bold my-4">Stock Sentiment Dashboard</h1>
       <SymbolSearch onSymbolAdded={handleUpdate} />
