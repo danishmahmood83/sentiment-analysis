@@ -40,7 +40,7 @@ const SymbolChartViewer = ({ refreshKey }) => {
       // <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
       //   <h2 className="text-lg font-semibold mb-4">Remove Tracked Symbol</h2>
       //   <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
-      <div className="p-4 border rounded max-w-xl mx-auto mt-6 shadow">
+      <div className="p-4 border rounded mx-auto mt-6 shadow w-full max-w-6xl">
       <h2 className="text-lg font-semibold mb-4">Select Symbol to View Sentiment</h2>
         <div className="p-4 border rounded max-w-xl mx-auto mt-8 shadow flex flex-col items-center space-y-4">
 
@@ -72,7 +72,7 @@ const SymbolChartViewer = ({ refreshKey }) => {
               </div>
 
               <div data-cy="sentiment-chart-wrapper"
-                   style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                   style={{ display: 'flex', gap: '20px' }}>
                 {selectedMethods.length === 0 ? (
                     <p>Select at least one analysis method to view charts.</p>
                 ) : (
